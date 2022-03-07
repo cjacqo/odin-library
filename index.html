@@ -24,6 +24,29 @@
         </tbody>
     </table>
     <button type="button" class="btn add-book">Add Book</button>
+    <form>
+        <fieldset>
+            <div class="form-control">
+                <label for="name">Name</label>
+                <input required type="text" id="name" name="name" minlength="3" maxlength="35">
+            </div>
+            <div class="form-control">
+                <label for="author">Author</label>
+                <input required type="text" id="author" name="author" minlength="3" maxlength="35">
+            </div>
+            <div class="form-control">
+                <label for="pages">Pages</label>
+                <input required type="number" id="pages" name="pages" min="1" max="2000">
+            </div>
+            <div class="form-control">
+                <label for="is_read">Is Read</label>
+                <input type="checkbox" id="is_read" name="is_read">
+            </div>
+        </fieldset>
+        <div class="submit-btn container">
+            <button type="submit" class="btn submit">Submit</button>
+        </div>
+    </form>
     <script src="js/script.js"></script>
 </body>
 </html>

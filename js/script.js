@@ -29,7 +29,7 @@ function createBookDisplay(book) {
     pagesInput.setAttribute('type', 'text')
     deleteBtn.setAttribute('type', 'button')
     deleteBtn.addEventListener('click', () => {
-        removeBookFromLibrary(book)
+        book.removeBookFromLibrary(book)
     })
 
     if (book) {
@@ -52,12 +52,30 @@ function createBookDisplay(book) {
     return tr
 }
 
+Book.prototype.removeBookFromLibrary = function(book) {
+    let copyLibrary = myLibrary.filter(b => {
+        console.log(b === book)
+        return b !== book
+    })
+    console.log(copyLibrary)
+    displayLibrary(copyLibrary)
+}
+
 function displayLibrary(arr) {
     const tb = document.getElementById('tbody')
-    arr.map(b => {
-        const bookElement = createBookDisplay(b)
-        tb.appendChild(bookElement)
-    })
+    console.log(arr)
+    if (arr) {
+        arr.map(b => {
+            console.log(b)
+            const bookElement = createBookDisplay(b)
+            tb.appendChild(bookElement)
+        })
+    } else {
+        console.log("Hi")
+        const addBookElement = createBookDisplay()
+        tb.appendChild(addBookElement)
+    }
+    
     return
 }
 
@@ -66,10 +84,7 @@ function addBookToLibrary(book) {
     displayLibrary(myLibrary)
 }
 
-function removeBookFromLibrary(book) {
-    let copyLibrary = myLibrary.filter(b => b !== book)
-    displayLibrary(copyLibrary)
-}
-
 let hp = new Book('Harry Potter', 'J.K. Rowling', 245)
+let lotr = new Book('The Lord of the Rings', 'J.R.R. Tolkien', 450)
 addBookToLibrary(hp)
+addBookToLibrary(lotr)
