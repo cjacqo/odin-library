@@ -1,8 +1,14 @@
 // ELEMENTS
-// --- Query    : query elements like the form, the submit button,
-//                etc...
-const submitBtn = document.getElementById('submitBtn')
+// --- Query    : query elements like the form, form elements,
+//                the submit button, etc...
+const nameInput     = document.getElementById('name')
+const authorInput   = document.getElementById('author')
+const pagesInput    = document.getElementById('pages')
+const readInput     = document.getElementById('is_read')
+const submitBtn     = document.getElementById('submitBtn')
 
+// ARRAYS
+// --- Library  : array to store the book objects
 let myLibrary = []
 
 // OBJECTS
