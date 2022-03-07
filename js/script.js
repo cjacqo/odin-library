@@ -12,23 +12,41 @@ class Book {
     }
 }
 
-function displayLibrary(arr) {
-    const tb = document.getElementById('tbody')
-    arr.map(b => {
-        const { name, author, pages } = b
-        const tr        = document.createElement('tr')
-        const tdName    = document.createElement('td')
-        const tdAuthor  = document.createElement('td')
-        const tdPages   = document.createElement('td')
+function createBookDisplay(book) {
+    const { name, author, pages } = book
+    const tr        = document.createElement('tr')
+    const tdName    = document.createElement('td')
+    const tdAuthor  = document.createElement('td')
+    const tdPages   = document.createElement('td')
 
+    const nameInput     = document.createElement('input')
+    const authorInput   = document.createElement('input')
+    const pagesInput    = document.createElement('input')
+    nameInput.setAttribute('type', 'text')
+    authorInput.setAttribute('type', 'text')
+    pagesInput.setAttribute('type', 'text')
+
+    if (book) {
         tdName.innerText    = name
         tdAuthor.innerText  = author
         tdPages.innerText   = pages
+    } else {
+        tdName.appendChild(nameInput)
+        tdAuthor.appendChild(authorInput)
+        tdPages.appendChild(pagesInput)
+    }
 
-        tr.appendChild(tdName)
-        tr.appendChild(tdAuthor)
-        tr.appendChild(tdPages)
-        tb.appendChild(tr)
+    tr.appendChild(tdName)
+    tr.appendChild(tdAuthor)
+    tr.appendChild(tdPages)
+    return tr
+}
+
+function displayLibrary(arr) {
+    const tb = document.getElementById('tbody')
+    arr.map(b => {
+        const bookElement = createBookDisplay(b)
+        tb.appendChild(bookElement)
     })
     return
 }
