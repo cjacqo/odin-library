@@ -1,1 +1,9 @@
-console.log("RUNNING SCRIPT")
+let myLibrary = []
+
+function Book() {
+    // the constructor
+}
+
+function addBookToLibrary() {
+    // do stuff
+}
