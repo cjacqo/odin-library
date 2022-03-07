@@ -44,6 +44,7 @@ function createBookDisplay(book) {
 
 function displayLibrary(arr) {
     const tb = document.getElementById('tbody')
+    console.log(arr)
     arr.map(b => {
         const bookElement = createBookDisplay(b)
         tb.appendChild(bookElement)
@@ -57,8 +58,14 @@ function addBookToLibrary(book) {
 }
 
 function removeBookFromLibrary(book) {
-    // do stuff
+    let copyLibrary = myLibrary.filter(b => b !== book)
+    displayLibrary(copyLibrary)
 }
 
 let hp = new Book('Harry Potter', 'J.K. Rowling', 245)
 addBookToLibrary(hp)
+
+setTimeout(() => {
+    console.log("Hi")
+    removeBookFromLibrary(hp)
+}, 5000)
