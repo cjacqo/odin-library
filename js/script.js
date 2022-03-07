@@ -22,9 +22,15 @@ function createBookDisplay(book) {
     const nameInput     = document.createElement('input')
     const authorInput   = document.createElement('input')
     const pagesInput    = document.createElement('input')
+    const deleteBtn     = document.createElement('button')
+    deleteBtn.innerText = 'Delete'
     nameInput.setAttribute('type', 'text')
     authorInput.setAttribute('type', 'text')
     pagesInput.setAttribute('type', 'text')
+    deleteBtn.setAttribute('type', 'button')
+    deleteBtn.addEventListener('click', () => {
+        removeBookFromLibrary(book)
+    })
 
     if (book) {
         tdName.innerText    = name
@@ -39,12 +45,15 @@ function createBookDisplay(book) {
     tr.appendChild(tdName)
     tr.appendChild(tdAuthor)
     tr.appendChild(tdPages)
+
+    if (book) {
+        tr.appendChild(deleteBtn)
+    }
     return tr
 }
 
 function displayLibrary(arr) {
     const tb = document.getElementById('tbody')
-    console.log(arr)
     arr.map(b => {
         const bookElement = createBookDisplay(b)
         tb.appendChild(bookElement)
@@ -64,8 +73,3 @@ function removeBookFromLibrary(book) {
 
 let hp = new Book('Harry Potter', 'J.K. Rowling', 245)
 addBookToLibrary(hp)
-
-setTimeout(() => {
-    console.log("Hi")
-    removeBookFromLibrary(hp)
-}, 5000)
