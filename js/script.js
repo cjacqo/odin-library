@@ -1,5 +1,13 @@
+// ELEMENTS
+// --- Query    : query elements like the form, the submit button,
+//                etc...
+const submitBtn = document.getElementById('submitBtn')
+
 let myLibrary = []
 
+// OBJECTS
+// --- Book     : takes a 'name', 'author', and pages number
+//                  + has method to return a string
 class Book {
     constructor(name, author, pages) {
         this.name   = name
