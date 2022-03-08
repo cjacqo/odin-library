@@ -13,6 +13,8 @@ const cardsView         = document.getElementById('cardsDisplayParent')
 // ~~ add book form
 const addBookModal      = document.getElementById('formModal')
 const overlay           = document.getElementById('overlay')
+// ~~ filter control board
+const filterBoard       = document.getElementById('filterControls')
 // ~~ form controls
 const nameCntrl         = document.getElementById('nameControl')
 const authorCntrl       = document.getElementById('authorControl')
@@ -40,7 +42,7 @@ openAddBookBtn.setAttribute('type', 'button')
 openAddBookBtn.classList.add('btn', 'add-book')
 openAddBookBtn.innerText = 'Add Book'
 // ~~ toggle filter menu buttoon
-const toggleFilterBtn   = document.createElement('filterBtn')
+const toggleFilterBtn   = document.getElementById('filterBtn')
 // ! -- modal toggle buttons array
 const modalToggles      = [smallAddBookBtn, toggleFilterBtn, overlay]
 // ~~ form attributes
@@ -88,6 +90,7 @@ dataViewBtns.forEach(btn => {
 modalToggles.forEach(btn => {
     btn.addEventListener('click', (e) => {
         let value = e.currentTarget.value
+        console.log(value)
         if (value) {
             // --- call the toggleModal() function
             toggleModal(value)
@@ -428,6 +431,7 @@ function toggleModal(value) {
     switch(value) {
         case 'filter':
             console.log(value)
+            filterBoard.classList.toggle('hidden')
             return
         case 'addBookForm':
             addBookModal.classList.toggle('hidden')

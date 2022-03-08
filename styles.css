@@ -253,13 +253,21 @@ label {
 /* FOOTER AREA */
 .footer-parent {
     flex: 0 1 auto;
+    width: 100%;
     height: 85px;
     gap: 1rem;
     justify-content: space-between;
     align-items: center;
 }
 
-.footer-parent > * {
+.menu-btns {
+    width: 100%;
+    align-items: center;
+    position: fixed;
+    bottom: 5px;
+}
+
+.menu-btns > * {
     flex: 1 1 200px;
     text-align: center;
 }
@@ -271,4 +279,18 @@ label {
 
 #filterIcon:hover {
     color: var(--yellow-color);
+}
+/* ---> filter board */
+#filterControls {
+    bottom: 0;
+    left: 0;
+    height: 80vh;
+    transition: height 500ms ease-in-out;
+}
+#filterControls.hidden {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
 }
