@@ -49,6 +49,9 @@ submitBtn.addEventListener('click', (e) => {
 class Library {
     constructor() {
         this.db = []
+        this.count = function() {
+            return this.db.length
+        }
     }
 }
 // --- Book             : takes a 'name', 'author', and pages number
@@ -83,7 +86,7 @@ Library.prototype.removeBookFromDb = function(delBook) {
     })
 }
 
-Library.prototype.displayLibrary = function(index) {
+Library.prototype.displayLibrary = function() {
     this.db.forEach(book => {
         tb.appendChild(book.element)
     })
