@@ -1,3 +1,15 @@
+// FILTER OBJECTS
+const filterParams = {
+    categories: [
+        { name: 'Fiction',      color: 'orange' },
+        { name: 'Non-Fiction',  color: 'green' },
+        { name: 'Sci-Fi',       color: 'purple' },
+        { name: 'Education',    color: 'yellow' },
+        { name: 'Horror',       color: 'red' },
+        { name: 'Biography',    color: 'blue' },
+    ]
+}
+
 // ELEMENTS
 // --- Query            : query elements like the form, form elements,
 //                        the submit button, etc...
@@ -456,6 +468,9 @@ function toggleModal(value) {
         default:
             return
     }
+}
+// --- Create Filter Options
+function createFilterOptions() {
 }
 
 // INITIAL

@@ -258,14 +258,15 @@ label {
     gap: 1rem;
     justify-content: space-between;
     align-items: center;
+    position: fixed;
+    bottom: 0;
+    background-color: #fff;
+    z-index: 1;
 }
 
 .menu-btns {
     width: 100%;
     align-items: center;
-    position: fixed;
-    z-index: 1;
-    bottom: 5px;
 }
 
 .menu-btns > * {
