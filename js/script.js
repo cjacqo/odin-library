@@ -18,6 +18,10 @@ const pagesErrMsg   = document.getElementById('pagesErr')
 const formErrMsgs   = [nameErrMsg, authorErrMsg, pagesErrMsg]   
 // ~~ submit button
 const submitBtn     = document.getElementById('submitBtn')
+// ~~ delete button
+const deleteBtn     = document.createElement('button')
+deleteBtn.innerText = 'Delete'
+deleteBtn.setAttribute('type', 'button')
 // ~~ form attributes
 const [...nameMinMax]   = [nameInput.getAttribute('minlength'), nameInput.getAttribute('maxlength')]
 const [...authorMinMax] = [authorInput.getAttribute('minlength'), authorInput.getAttribute('maxlength')]
@@ -43,6 +47,16 @@ submitBtn.addEventListener('click', (e) => {
     submitForm(isValid, [nameValue, authorValue, pagesValue, readValue])
     myLibrary.displayLibrary(myLibrary)
 })
+// --- Delete Btn
+deleteBtn.addEventListener('click', (e) => {
+    // -- get the parent node (which is the tr)
+    //      + learned from https://stackoverflow.com/questions/13241005/add-delete-row-from-a-table
+    let row = e.target.parentNode
+    // -- pass row to remove function
+    //      + removes this child from the DOM
+    bookObj.removeBookDisplay(row)
+    myLibrary.removeBookFromDb(row)
+})
 
 // OBJECTS
 // --- Library          : is a class to store an array of Book class objects
@@ -67,8 +81,9 @@ class Book {
 }
 
 const myLibrary = new Library()
+const bookObj = new Book()
 
-function createBookDisplay(book) {
+Book.prototype.createBookDisplay = function(book) {
     // -- set an attribute for an index value based on the length of the library
     const index = myLibrary.db.length
     // -- destructure the book
@@ -85,20 +100,12 @@ function createBookDisplay(book) {
     const authorInput   = document.createElement('input')
     const pagesInput    = document.createElement('input')
     const readInput     = document.createElement('input')
-    //      + buttons
-    const deleteBtn     = document.createElement('button')
-    deleteBtn.innerText = 'Delete'
     // -- set HTML attributes
     tr.setAttribute('data-index', index)
     nameInput.setAttribute('type', 'text')
     authorInput.setAttribute('type', 'text')
     pagesInput.setAttribute('type', 'text')
     readInput.setAttribute('type', 'checkbox')
-    deleteBtn.setAttribute('type', 'button')
-    // -- event listeners
-    deleteBtn.addEventListener('click', () => {
-        myLibrary.removeBookFromDb(book)
-    })
 
     if (book) {
         tdName.innerText    = name
@@ -118,24 +125,32 @@ function createBookDisplay(book) {
     tr.appendChild(tdRead)
 
     if (book) {
+        deleteBtn.setAttribute('value', Object.entries(book))
         tr.appendChild(deleteBtn)
     }
     return tr
 }
 
+Book.prototype.removeBookDisplay = function(book) {
+    tb.removeChild(book)
+    return
+}
+
 Library.prototype.addBookToDb = function(book) {
-    const bookElement = createBookDisplay(book)
+    const bookElement = bookObj.createBookDisplay(book)
     this.db.push({data: book, element: bookElement})
+    console.log(this.db)
 }
 
-Library.prototype.removeBookFromDb = function(b) {
-    const bookElement = b
-    console.log(bookElement)
-    this.db = this.db.filter(book => book.data !== b)
-    myLibrary.displayLibrary()
+Library.prototype.removeBookFromDb = function(delBook) {
+    // -- loop over the elements in the library (db),
+    //    return only the books that do not equal the param
+    this.db = this.db.filter(book => {
+        return book.element !== delBook
+    })
 }
 
-Library.prototype.displayLibrary = function() {
+Library.prototype.displayLibrary = function(index) {
     this.db.forEach(book => {
         tb.appendChild(book.element)
     })
