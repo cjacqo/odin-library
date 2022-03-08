@@ -15,26 +15,28 @@ let dataDisplay = (function() {
     let tb       = document.getElementById('tbody')
     let cb       = document.getElementById('cardsDisplayParent')
     
-    function _createDataDisplay(value) {
-        if (dataView === value) {
+    return {
+        tableView: function() {
             myLibrary.db.forEach(obj => {
-                cb.classList.toggle('hidden')
+                if (!cb.classList.contains('hidden')) {
+                    cb.classList.add('hidden')
+                }
+                if (tb.classList.contains('hidden')) {
+                    tb.classList.remove('hidden')
+                }
                 tb.appendChild(obj.tableElement)
             })
-        } else {
+        },
+        cardView: function() {
             myLibrary.db.forEach(obj => {
-                tb.classList.toggle('hidden')
+                if (!tb.classList.contains('hidden')) {
+                    tb.classList.add('hidden')
+                }
+                if (cb.classList.contains('hidden')) {
+                    cb.classList.remove('hidden')
+                }
                 cb.appendChild(obj.cardElement)
             })
-        }
-    }
-
-    return {
-        defaultView: function() {
-
-        },
-        changeView: function(viewValue) {
-            _createDataDisplay(viewValue)
         }
     }
 })()
@@ -108,8 +110,6 @@ let myLibrary = (function() {
 
     // --- create HTML elements
     function _tableElement(book, id) {
-        // -- destructure the book
-        const { name, author, pages, read } = book
         // -- create HTML elements
         //      + table row & data
         const tr            = document.createElement('tr')
@@ -140,10 +140,10 @@ let myLibrary = (function() {
             // myLibrary.removeBookFromDb(row)
         })
 
-        tdName.innerText    = name
-        tdAuthor.innerText  = author
-        tdPages.innerText   = pages
-        tdRead.innerText    = read
+        tdName.innerText    = book.getName()
+        tdAuthor.innerText  = book.getAuthor()
+        tdPages.innerText   = book.getPages()
+        tdRead.innerText    = book.getRead()
         tdDelete.appendChild(deleteBtn)
 
         tr.appendChild(tdName)
@@ -155,8 +155,6 @@ let myLibrary = (function() {
         return tr
     }
     function _cardElement(book, id) {
-        // -- destructure the book
-        const { name, author, pages, read } = book
         // -- create HTML elements
         //      + card container and data containers
         const cardContainer = document.createElement('div')
@@ -184,10 +182,10 @@ let myLibrary = (function() {
             // myLibrary.removeBookFromDb(card)
         })
 
-        divName.innerText    = name
-        divAuthor.innerText  = author
-        divPages.innerText   = pages
-        divRead.innerText    = read
+        divName.innerText    = book.getName()
+        divAuthor.innerText  = book.getAuthor()
+        divPages.innerText   = book.getPages()
+        divRead.innerText    = book.getRead()
         divDelete.appendChild(deleteBtn)
 
         cardContainer.appendChild(divName)
@@ -232,13 +230,18 @@ let buttons = (function() {
     function _addEvents(arr) {
         arr.forEach(btn => {
             let value = btn.value
-            btn.addEventListener('click', () => {
-                if (value === 'table' || value === 'cards') {
-                    dataDisplay.changeView(value)
+            btn.addEventListener('click', (e) => {
+                e.preventDefault()
+                if (value === 'table') {
+                    dataDisplay.tableView()
+                } else if (value === 'cards') {
+                    console.log("Hi")
+                    dataDisplay.cardView()
                 } else {
                     modalDisplay.toggleModal(value)
                 }
             })
+            btnsArr.push(btn)
         })
     }
 
@@ -246,7 +249,8 @@ let buttons = (function() {
         createBtnsArr: function() {
             // query all buttons
             const btnElements = document.querySelectorAll('button')
-            const newArr      = _addEvents(btnElements)
+            _addEvents(btnElements)
+            console.log(btnsArr)
         }
     }
 })()
@@ -265,3 +269,4 @@ const book1 = Book('Harry Potter', 'J.K. Rowling', 345, true, 'Fantasy')
 
 myLibrary.add(book1)
 buttons.createBtnsArr()
+dataDisplay.tableView()
