@@ -89,6 +89,14 @@ th, td {
 tbody tr:nth-child(odd) {
     background: #eee;
 }
+.w-hundred {
+    width: 100px;
+    text-align: center;
+}
+.w-fifty {
+    width: 50px;
+    text-align: center;
+}
 .table-section > table {
     /* width: 100%; */
 }

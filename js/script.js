@@ -128,8 +128,6 @@ Library.prototype.displayLibrary = function() {
 }
 
 Book.prototype.createBookDisplay = function(book) {
-    // -- set an attribute for an index value based on the length of the library
-    const index = myLibrary.db.length
     // -- destructure the book
     const { name, author, pages, read } = book
     // -- create HTML elements
@@ -139,18 +137,22 @@ Book.prototype.createBookDisplay = function(book) {
     const tdAuthor      = document.createElement('td')
     const tdPages       = document.createElement('td')
     const tdRead        = document.createElement('td')
+    const tdDelete      = document.createElement('td')
     // -- set HTML attributes
-    tr.setAttribute('data-index', index)
+    tdPages.style.textAlign = 'center'
+    tdRead.style.textAlign = 'center'
+    tdDelete.style.textAlign = 'center'
     // ~~ delete button
     const deleteBtn     = document.createElement('button')
     deleteBtn.innerText = 'Delete'
     deleteBtn.setAttribute('type', 'button')
+    
 
     // --- Delete Btn
     deleteBtn.addEventListener('click', (e) => {
         // -- get the parent node (which is the tr)
         //      + learned from https://stackoverflow.com/questions/13241005/add-delete-row-from-a-table
-        let row = e.target.parentNode
+        let row = e.target.parentNode.parentNode
         // -- pass row to remove function
         //      + removes this child from the DOM
         bookObj.removeBookDisplay(row)
@@ -161,16 +163,15 @@ Book.prototype.createBookDisplay = function(book) {
     tdAuthor.innerText  = author
     tdPages.innerText   = pages
     tdRead.innerText    = read
+    deleteBtn.setAttribute('value', Object.entries(book))
+    tdDelete.appendChild(deleteBtn)
 
     tr.appendChild(tdName)
     tr.appendChild(tdAuthor)
     tr.appendChild(tdPages)
     tr.appendChild(tdRead)
+    tr.appendChild(tdDelete)
 
-    if (book) {
-        deleteBtn.setAttribute('value', Object.entries(book))
-        tr.appendChild(deleteBtn)
-    }
     return tr
 }
 
