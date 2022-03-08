@@ -73,29 +73,30 @@
                 <div class="form-control" id="nameControl">
                     <label for="name">Name</label>
                     <input class="input" required type="text" id="name" name="name" minlength="3" maxlength="35">
-                    <span class="errMsg" id="nameErr"></span>
+                    <div class="errMsg" id="nameErr"></div>
                 </div>
                 <div class="form-control" id="authorControl">
                     <label for="author">Author</label>
                     <input class="input" required type="text" id="author" name="author" minlength="3" maxlength="35">
-                    <span class="errMsg" id="authorErr"></span>
+                    <div class="errMsg" id="authorErr"></div>
                 </div>
                 <div class="form-control" id="pagesControl">
                     <label for="pages">Pages</label>
                     <input class="input" required type="number" id="pages" name="pages" min="1" max="2000">
-                    <span class="errMsg" id="pagesErr"></span>
+                    <div class="errMsg" id="pagesErr"></div>
                 </div>
                 <div class="form-control" id="isreadControl">
                     <label for="is_read">Is Read</label>
                     <input class="input" type="checkbox" id="is_read" name="is_read">
-                    <span class="errMsg" id="pagesErr"></span>
+                    <div class="errMsg" id="pagesErr"></div>
                 </div>
             </fieldset>
             <div class="submit-btn container">
-                <button type="submit" class="btn submit" id="submitBtn">Submit</button>
+                <button type="submit" class="btn submit primary-btn" id="submitBtn">Add Book</button>
             </div>
         </form>
     </main>
+    <div class="hidden" id="overlay"></div>
     <script src="js/script.js"></script>
 </body>
 </html>

@@ -12,6 +12,7 @@ const tableView         = document.getElementById('tableDisplayParent')
 const cardsView         = document.getElementById('cardsDisplayParent')
 // ~~ add book form
 const addBookModal      = document.getElementById('formModal')
+const overlay           = document.getElementById('overlay')
 // ~~ form controls
 const nameCntrl         = document.getElementById('nameControl')
 const authorCntrl       = document.getElementById('authorControl')
@@ -33,9 +34,10 @@ const dataViewBtns      = document.querySelectorAll('.data-swap-btn')
 const submitBtn         = document.getElementById('submitBtn')
 // ~~ open form button
 const openAddBookBtn    = document.createElement('button')
+openAddBookBtn.classList.add('primary-btn', 'pointer')
 openAddBookBtn.setAttribute('type', 'button')
 openAddBookBtn.classList.add('btn', 'add-book')
-openAddBookBtn.innerText = 'Library is Empty: Add a Book'
+openAddBookBtn.innerText = 'Add Book'
 // ~~ form attributes
 const [...nameMinMax]   = [nameInput.getAttribute('minlength'), nameInput.getAttribute('maxlength')]
 const [...authorMinMax] = [authorInput.getAttribute('minlength'), authorInput.getAttribute('maxlength')]
@@ -48,6 +50,8 @@ const tb = document.getElementById('tbody')
 //                        the addBook function
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault()
+    addBookModal.classList.toggle('hidden')
+    overlay.classList.toggle('hidden')
     // - get values from inputs
     const nameValue     = nameInput.value
     const authorValue   = authorInput.value
@@ -64,6 +68,7 @@ submitBtn.addEventListener('click', (e) => {
 // --- Open Add Book    : will open the form for the user to add a book
 openAddBookBtn.addEventListener('click', (e) => {
     addBookModal.classList.toggle('hidden')
+    overlay.classList.toggle('hidden')
 })
 // --- Data View Buttons: will pass the value of the button to the library,
 //                        then call the swap function to swap the data rendered
@@ -345,7 +350,7 @@ function validateForm(name, author, pages) {
     const pv = parseInt(pages) >= pagesMinMax[0] && parseInt(pages) <= pagesMinMax[1]
 
     // check validation booleans (nv, av, pv), and return a text if FALSE, false if TRUE
-    errMsg.nameErr      = !nv ? 'Name of book is required and must be larger than ' + nameMinMax[0] + ' and less than ' + nameMinMax[1] : false
+    errMsg.nameErr      = !nv ? 'Name is required and must be larger than ' + nameMinMax[0] + ' and less than ' + nameMinMax[1] : false
     errMsg.authorErr    = !av ? 'Author is required and must be larger than ' + authorMinMax[0] + ' and less than ' + authorMinMax[1] : false
     errMsg.pagesErr     = !pv ? 'Pages is required and must be a number between ' + pagesMinMax[0] + ' and ' + pagesMinMax[1] : false
 
