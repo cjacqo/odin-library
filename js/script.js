@@ -7,6 +7,12 @@ const filterParams = {
         { name: 'Education',    color: 'yellow' },
         { name: 'Horror',       color: 'red' },
         { name: 'Biography',    color: 'blue' },
+    ],
+    columns: [
+        { name: 'Name',     order: 0 },
+        { name: 'Author',   order: 0 },
+        { name: 'Pages',    order: 0 },
+        { name: 'Read',     order: 0 },
     ]
 }
 
@@ -120,6 +126,7 @@ class Library {
         this.db = []
         this.dataView = 'table'
         this.modalOpen = null
+        this.filterDb = { categories: [], columns: [] }
         this.swapView = function() {
             if (this.dataView === 'table') {
                 cardsView.classList.add('hidden')
@@ -207,6 +214,26 @@ Library.prototype.displayLibrary = function() {
     // --- create an empty row with the button
     createEmptyRow()
     updateHeaderDetails()
+}
+
+Library.prototype.filterLibrary = function(isChecked, value, type) {
+    switch(type) {
+        case 'categories':
+            if (!isChecked) {
+                this.filterDb.categories = this.filterDb.categories.filter(f => f !== value)
+            } else {
+                this.filterDb.categories.push(value)
+            }
+            console.log(this.filterDb)
+            return
+        case 'columns':
+            if (this.filterDb.columns.length > 0) {
+                this.filterDb.columns = []
+            }
+            this.filterDb.columns.push(value)
+            console.log(this.filterDb)
+            return
+    }
 }
 
 Book.prototype.createRowBookDisplay = function(book, id) {
@@ -471,10 +498,11 @@ function toggleModal(value) {
 }
 // --- Create Filter Options        : create a list of checkboxes for category filters
 function createFilterOptions() {
-    const form      = document.createElement('form')
-    const fieldSet  = document.createElement('fieldset')
+    const form                = document.createElement('form')
+    const categoriesFieldSet  = document.createElement('fieldset')
+    const columnsFieldSet  = document.createElement('fieldset')
 
-    // --- loop over array of fitlers
+    // --- loop over array of category filters
     filterParams.categories.forEach(cat => {
         const formCntrlId = cat.name.toLowerCase()
         const formCntrl = document.createElement('div')
@@ -487,11 +515,37 @@ function createFilterOptions() {
         checkBox.setAttribute('type', 'checkbox')
         checkBox.setAttribute('name', formCntrlId)
         checkBox.setAttribute('id', formCntrlId)
+        checkBox.setAttribute('value', formCntrlId)
+        checkBox.addEventListener('click', () => {
+            myLibrary.filterLibrary(checkBox.checked, formCntrlId, 'categories')
+        })
         formCntrl.appendChild(label)
         formCntrl.appendChild(checkBox)
-        fieldSet.appendChild(formCntrl)
+        categoriesFieldSet.appendChild(formCntrl)
     })
-    form.appendChild(fieldSet)
+    // --- loop over array of column filters
+    filterParams.columns.forEach(col => {
+        const formCntrlId = col.name.toLowerCase()
+        const formCntrl = document.createElement('div')
+        const label     = document.createElement('label')
+        const radio     = document.createElement('input')
+        formCntrl.classList.add('filter-control')
+        formCntrl.setAttribute('id', `${formCntrlId}FilterControl`)
+        label.innerHTML = col.name
+        label.setAttribute('for', formCntrlId)
+        radio.setAttribute('type', 'radio')
+        radio.setAttribute('name', 'columnradio')
+        radio.setAttribute('id', formCntrlId)
+        radio.setAttribute('value', formCntrlId)
+        radio.addEventListener('click', () => {
+            myLibrary.filterLibrary(radio.checked, formCntrlId, 'columns')
+        })
+        formCntrl.appendChild(label)
+        formCntrl.appendChild(radio)
+        columnsFieldSet.appendChild(formCntrl)
+    })
+    form.appendChild(categoriesFieldSet)
+    form.appendChild(columnsFieldSet)
     filterBoard.appendChild(form)
 }
 
