@@ -60,12 +60,10 @@ let modalDisplay = (function() {
                     theArr[1][1].classList.toggle('hidden')
                     isOpen = true
                 }
-                // theArr[0][1].classList.toggle('hidden')
             }
         } else if (theArr[1][0] === modal) {
             if (!isOpen) {
                 theArr[1][1].classList.remove('hidden')
-                // theArr[1][1].classList.toggle('hidden')
                 isOpen = true
             } else {
                 if (isOpen) {
@@ -78,21 +76,8 @@ let modalDisplay = (function() {
                     theArr[0][1].classList.toggle('hidden')
                     isOpen = true
                 }
-                // theArr[1][1].classList.toggle('hidden')
             }
         }
-        // arr.forEach(form => {
-        //     let [...id] = form.classList
-        //     if (id.includes(modal) || isOpen) {
-        //         form.classList.remove('hidden')
-        //         console.log(form)
-        //     } else {
-        //         if (id.includes(modal) || !isOpen) {
-        //             form.classList.toggle('hidden')
-        //             console.log(form)
-        //         }
-        //     }
-        // })
     }
 
     return {
