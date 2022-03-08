@@ -1,11 +1,16 @@
 // ELEMENTS
 // --- Query            : query elements like the form, form elements,
 //                        the submit button, etc...
-// ~~ details table 
+// ~~ details table
 const bookTotal         = document.querySelector('.details-total.count')
 const readTotal         = document.querySelector('.details-read.count')
 const bookTotalTxt      = document.createElement('p')
 const readTotalTxt      = document.createElement('p')
+// ~~ table view parents
+const dataArea          = document.getElementById('sectionArea')
+const tableView         = document.getElementById('tableDisplayParent')
+const cardsView         = document.createElement('cardsDisplayParent')
+cardsView.setAttribute('id', 'cardsDisplayParent')
 // ~~ form controls
 const nameCntrl         = document.getElementById('nameControl')
 const authorCntrl       = document.getElementById('authorControl')
@@ -20,7 +25,9 @@ const readInput         = document.getElementById('is_read')
 const nameErrMsg        = document.getElementById('nameErr')
 const authorErrMsg      = document.getElementById('authorErr')
 const pagesErrMsg       = document.getElementById('pagesErr')
-const formErrMsgs       = [nameErrMsg, authorErrMsg, pagesErrMsg]   
+const formErrMsgs       = [nameErrMsg, authorErrMsg, pagesErrMsg]
+// ~~ data view buttons
+const dataViewBtns      = document.querySelectorAll('.data-swap-btn')
 // ~~ submit button
 const submitBtn         = document.getElementById('submitBtn')
 // ~~ open form button
@@ -57,12 +64,31 @@ submitBtn.addEventListener('click', (e) => {
 openAddBookBtn.addEventListener('click', (e) => {
     console.log("hi")
 })
+// --- Data View Buttons: will pass the value of the button to the library,
+//                        then call the swap function to swap the data rendered
+dataViewBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        let value = e.currentTarget.value
+        myLibrary.dataView = value
+        myLibrary.swapView()
+    })
+})
 
 // OBJECTS
 // --- Library          : is a class to store an array of Book class objects
 class Library {
     constructor() {
         this.db = []
+        this.dataView = 'table'
+        this.swapView = function() {
+            if (this.dataView === 'table') {
+                dataArea.removeChild(cardsView)
+                dataArea.appendChild(tableView)
+            } else {
+                dataArea.removeChild(tableView)
+                dataArea.appendChild(cardsView)
+            }
+        }
         this.count = function() {
             return this.db.length
         }
@@ -92,9 +118,26 @@ const myLibrary = new Library()
 const bookObj = new Book()
 const testObj = new Book()
 
+// --- ID Tracker       : factory function test, used for deleting
+const counterCreator = () => {
+    let count = 0
+    return () => {
+        count++
+        return count
+    }
+}
+const counter = counterCreator()
+
 Library.prototype.addBookToDb = function(book) {
-    const bookElement = bookObj.createBookDisplay(book)
-    this.db.push({data: book, element: bookElement})
+    // --- get the count/id
+    let id = counter().toString()
+
+    // --- create HTML for both of the data views
+    //     and add to the objec that is pushed
+    const bookTableElement  = bookObj.createRowBookDisplay(book, id)
+    const bookCardElement   = bookObj.createCardBookDisplay(book, id)
+    
+    this.db.push({data: book, tableElement: bookTableElement, cardElement: bookCardElement, id: id})
     updateHeaderDetails()
 }
 
@@ -122,12 +165,13 @@ Library.prototype.displayLibrary = function() {
     }
     // -- append each book objects element to the table body
     this.db.forEach(book => {
-        tb.appendChild(book.element)
+        tb.appendChild(book.tableElement)
+        cardsView.appendChild(book.cardElement)
     })
     updateHeaderDetails()
 }
 
-Book.prototype.createBookDisplay = function(book) {
+Book.prototype.createRowBookDisplay = function(book, id) {
     // -- destructure the book
     const { name, author, pages, read } = book
     // -- create HTML elements
@@ -146,6 +190,7 @@ Book.prototype.createBookDisplay = function(book) {
     const deleteBtn     = document.createElement('button')
     deleteBtn.innerText = 'Delete'
     deleteBtn.setAttribute('type', 'button')
+    deleteBtn.setAttribute('value', id)
     
 
     // --- Delete Btn
@@ -153,17 +198,17 @@ Book.prototype.createBookDisplay = function(book) {
         // -- get the parent node (which is the tr)
         //      + learned from https://stackoverflow.com/questions/13241005/add-delete-row-from-a-table
         let row = e.target.parentNode.parentNode
+        let btn = e.currentTarget.value
         // -- pass row to remove function
         //      + removes this child from the DOM
-        bookObj.removeBookDisplay(row)
-        myLibrary.removeBookFromDb(row)
+        bookObj.removeBookDisplay(btn)
+        // myLibrary.removeBookFromDb(row)
     })
 
     tdName.innerText    = name
     tdAuthor.innerText  = author
     tdPages.innerText   = pages
     tdRead.innerText    = read
-    deleteBtn.setAttribute('value', Object.entries(book))
     tdDelete.appendChild(deleteBtn)
 
     tr.appendChild(tdName)
@@ -175,8 +220,63 @@ Book.prototype.createBookDisplay = function(book) {
     return tr
 }
 
+Book.prototype.createCardBookDisplay = function(book, id) {
+    // -- destructure the book
+    const { name, author, pages, read } = book
+    // -- create HTML elements
+    //      + card container and data containers
+    const cardContainer = document.createElement('div')
+    const divName       = document.createElement('div')
+    const divAuthor     = document.createElement('div')
+    const divPages      = document.createElement('div')
+    const divRead       = document.createElement('div')
+    const divDelete     = document.createElement('div')
+    // -- set HTML attributes
+    cardContainer.classList.add('card-container', 'flex')
+    // ~~ delete button
+    const deleteBtn     = document.createElement('button')
+    deleteBtn.innerText = 'Delete'
+    deleteBtn.setAttribute('type', 'button')
+    deleteBtn.setAttribute('value', id)
+
+    // --- Delete Btn
+    deleteBtn.addEventListener('click', (e) => {
+        // -- get the parent node (which is the tr)
+        //      + learned from https://stackoverflow.com/questions/13241005/add-delete-row-from-a-table
+        let btn = e.currentTarget.value
+        // -- pass row to remove function
+        //      + removes this child from the DOM
+        bookObj.removeBookDisplay(btn)
+        // myLibrary.removeBookFromDb(card)
+    })
+
+    divName.innerText    = name
+    divAuthor.innerText  = author
+    divPages.innerText   = pages
+    divRead.innerText    = read
+    divDelete.appendChild(deleteBtn)
+
+    cardContainer.appendChild(divName)
+    cardContainer.appendChild(divAuthor)
+    cardContainer.appendChild(divPages)
+    cardContainer.appendChild(divRead)
+    cardContainer.appendChild(divDelete)
+
+    return cardContainer
+}
+
 Book.prototype.removeBookDisplay = function(book) {
-    tb.removeChild(book)
+    myLibrary.db = myLibrary.db.filter(b => {
+        let currentId = b.id
+        let delBookId = book
+        if (currentId !== delBookId) {
+            return b
+        } else {
+            tb.removeChild(b.tableElement)
+            cardsView.remove(b.cardElement)
+        }
+    })
+    myLibrary.displayLibrary()
     return
 }
 
