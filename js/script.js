@@ -96,7 +96,7 @@ class Library {
             return this.db.length
         }
         this.readCount = function() {
-            let totalRead       = this.db.filter(db => db.read)
+            let totalRead       = this.db.filter(book => book.data.read && book)
             let totalReadCount  = totalRead.length
             return totalReadCount + ' / ' + this.db.length
         }
