@@ -41,12 +41,8 @@ submitBtn.addEventListener('click', (e) => {
     const isValid       = validateForm(nameValue, authorValue, pagesValue)
 
     submitForm(isValid, [nameValue, authorValue, pagesValue, readValue])
-    displayLibrary(myLibrary)
+    myLibrary.displayLibrary(myLibrary)
 })
-
-// ARRAYS
-// --- Library          : array to store the book objects
-let myLibrary = []
 
 // OBJECTS
 // --- Library          : is class to store an array of Book class objects
@@ -69,6 +65,9 @@ class Book {
         return this.name + ', by ' + this.author + ', ' + this.pages + ' pages. Is read: ' + this.read
     }
 }
+
+const myLibrary = new Library()
+console.log(myLibrary)
 
 function createBookDisplay(book) {
     const { name, author, pages } = book
@@ -110,6 +109,17 @@ function createBookDisplay(book) {
     return tr
 }
 
+Library.prototype.addBookToDb = function(book) {
+    const bookElement = createBookDisplay(book)
+    this.db.push({data: book, element: bookElement})
+}
+
+Library.prototype.displayLibrary = function() {
+    this.db.forEach(book => {
+        tb.appendChild(book.element)
+    })
+}
+
 Book.prototype.removeBookFromLibrary = function(book) {
     let copyLibrary = myLibrary.filter(b => {
         console.log(b === book)
@@ -119,40 +129,7 @@ Book.prototype.removeBookFromLibrary = function(book) {
     displayLibrary(copyLibrary)
 }
 
-function displayLibrary(arr) {
-    console.log(arr)
-    // if (arr) {
-    //     arr.map(b => {
-    //         console.log(b)
-    //         const bookElement = createBookDisplay(b)
-    //         tb.appendChild(bookElement)
-    //     })
-    // } else {
-    //     console.log("Hi")
-    //     const addBookElement = createBookDisplay()
-    //     tb.appendChild(addBookElement)
-    // }
-    
-    return
-}
-
-function addBookToLibrary(book) {
-    myLibrary.push(book)
-    displayLibrary(myLibrary)
-}
-
 // FUNCTIONS
-// --- Add Book         : runs when the submitBtn variable is clicked
-//                          + accepts the values of the for inputs
-//                              to create a book object and then push to
-//                              the library
-function addBook(book) {
-    let copyMyLibrary = myLibrary
-    console.log(copyMyLibrary)
-    copyMyLibrary.push(book)
-    console.log(copyMyLibrary)
-    myLibrary = copyMyLibrary
-}
 // --- Clear Errors     : loop over the error message elements array to clear
 function clearErrors() {
     formErrMsgs.forEach(el => {
@@ -219,12 +196,8 @@ function submitForm(isValid, values) {
         //      + clear input values
         //      + create book object and add to library
         const book = new Book(values[0], values[1], values[2], values[3])
-        addBook(book)
+        // addBook(book)
+        myLibrary.addBookToDb(book)
         resetForm()
     }
 }
-
-let hp = new Book('Harry Potter', 'J.K. Rowling', 245)
-let lotr = new Book('The Lord of the Rings', 'J.R.R. Tolkien', 450)
-// addBookToLibrary(hp)
-// addBookToLibrary(lotr)
