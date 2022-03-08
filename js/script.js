@@ -350,22 +350,22 @@ Book.prototype.createFormRow = function() {
 }
 
 // FUNCTIONS
-// --- Clear Errors     : loop over the error message elements array to clear
+// --- Clear Errors                 : loop over the error message elements array to clear
 function clearErrors() {
     formErrMsgs.forEach(el => {
         el.innerText = ''
     })
 }
-// --- Reset Form       : query all inputs, loop over the inputs and clear 
-//                        the text
+// --- Reset Form                   : query all inputs, loop over the inputs and clear 
+//                                    the text
 function resetForm() {
     const formInputs = document.querySelectorAll('.input')
     formInputs.forEach(input => {
         input.value = ''
     })
 }
-// --- Validate Form    : checks form values to see if inputs are valid,
-//                        returns object of messages
+// --- Validate Form                : checks form values to see if inputs are valid,
+//                                    returns object of messages
 function validateForm(name, author, pages) {
     // error messages object
     const errMsg = {
@@ -390,9 +390,9 @@ function validateForm(name, author, pages) {
     // return errMsg object
     return errMsg
 }
-// --- Submit Form      : displays error messages, calls to reset errors,
-//                        and creates a book object, adds it to the library,
-//                        then resets the form input values
+// --- Submit Form                  : displays error messages, calls to reset errors,
+//                                    and creates a book object, adds it to the library,
+//                                    then resets the form input values
 function submitForm(isValid, values) {
     // - check if an error message exists, then loop through object to display
     //   message
@@ -432,14 +432,14 @@ function createEmptyRow() {
     tr.appendChild(td)
     tb.appendChild(tr)
 }
-// --- Update Header Details Table
+// --- Update Header Details Table  : will update the count HTML in the details table
 function updateHeaderDetails() {
     bookTotalTxt.innerText = myLibrary.count()
     readTotalTxt.innerText = myLibrary.readCount()
     bookTotal.appendChild(bookTotalTxt)
     readTotal.appendChild(readTotalTxt)
 }
-// --- Toggle Modal Function
+// --- Toggle Modal Function        : handle toggling classes of modals based on state
 function toggleModal(value) {
     switch(value) {
         case 'filter':
@@ -469,11 +469,34 @@ function toggleModal(value) {
             return
     }
 }
-// --- Create Filter Options
+// --- Create Filter Options        : create a list of checkboxes for category filters
 function createFilterOptions() {
+    const form      = document.createElement('form')
+    const fieldSet  = document.createElement('fieldset')
+
+    // --- loop over array of fitlers
+    filterParams.categories.forEach(cat => {
+        const formCntrlId = cat.name.toLowerCase()
+        const formCntrl = document.createElement('div')
+        const label     = document.createElement('label')
+        const checkBox  = document.createElement('input')
+        formCntrl.classList.add('filter-control')
+        formCntrl.setAttribute('id', `${formCntrlId}FilterControl`)
+        label.innerHTML = cat.name
+        label.setAttribute('for', formCntrlId)
+        checkBox.setAttribute('type', 'checkbox')
+        checkBox.setAttribute('name', formCntrlId)
+        checkBox.setAttribute('id', formCntrlId)
+        formCntrl.appendChild(label)
+        formCntrl.appendChild(checkBox)
+        fieldSet.appendChild(formCntrl)
+    })
+    form.appendChild(fieldSet)
+    filterBoard.appendChild(form)
 }
 
 // INITIAL
 // --- create a empty form row with a button to open form
 createEmptyRow()
+createFilterOptions()
 updateHeaderDetails()
