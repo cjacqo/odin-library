@@ -93,8 +93,6 @@ modalToggles.forEach(btn => {
         if (value) {
             // --- call the toggleModal() function
             toggleModal(value)
-            // --- set the state to track modal open
-            myLibrary.modalOpen = value
         } else {
             addBookModal.classList.toggle('hidden')
             overlay.classList.toggle('hidden')
@@ -435,6 +433,7 @@ function toggleModal(value) {
         case 'filter':
             // --- there is not modal open
             if (!myLibrary.modalOpen || myLibrary.modalOpen === value) {
+                myLibrary.modalOpen = myLibrary.modalOpen === value ? null : value
                 filterBoard.classList.toggle('hidden')
             } else if (myLibrary.modalOpen === 'addBookForm') {
                 addBookModal.classList.toggle('hidden')
@@ -445,6 +444,7 @@ function toggleModal(value) {
         case 'addBookForm':
             // --- there is not modal open
             if (!myLibrary.modalOpen || myLibrary.modalOpen === value) {
+                myLibrary.modalOpen = myLibrary.modalOpen === value ? null : value
                 addBookModal.classList.toggle('hidden')
                 overlay.classList.toggle('hidden')
             } else if (myLibrary.modalOpen === 'filter') {
