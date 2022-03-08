@@ -95,6 +95,7 @@ Library.prototype.displayLibrary = function() {
         tb.appendChild(book.element)
     })
     const formRow = testObj.createFormRow()
+    formRow.setAttribute('id', 'formRow')
     tb.appendChild(formRow)
 }
 
