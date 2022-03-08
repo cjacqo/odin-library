@@ -34,6 +34,7 @@ const dataViewBtns      = document.querySelectorAll('.data-swap-btn')
 const submitBtn         = document.getElementById('submitBtn')
 // ~~ open form button
 const openAddBookBtn    = document.createElement('button')
+const smallAddBookBtn   = document.getElementById('smallAddBtn')
 openAddBookBtn.classList.add('primary-btn', 'pointer')
 openAddBookBtn.setAttribute('type', 'button')
 openAddBookBtn.classList.add('btn', 'add-book')
@@ -67,6 +68,10 @@ submitBtn.addEventListener('click', (e) => {
 })
 // --- Open Add Book    : will open the form for the user to add a book
 openAddBookBtn.addEventListener('click', (e) => {
+    addBookModal.classList.toggle('hidden')
+    overlay.classList.toggle('hidden')
+})
+smallAddBookBtn.addEventListener('click', (e) => {
     addBookModal.classList.toggle('hidden')
     overlay.classList.toggle('hidden')
 })

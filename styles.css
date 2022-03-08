@@ -54,6 +54,12 @@ body {
     font-weight: bold;
     text-transform: uppercase;
 }
+#smallAddBtn {
+    padding: 0;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+}
 
 .pointer {
     cursor: pointer;
@@ -247,5 +253,23 @@ label {
 /* FOOTER AREA */
 .footer-parent {
     flex: 0 1 auto;
-    height: 50px;
+    height: 85px;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-parent > * {
+    flex: 1 1 200px;
+    text-align: center;
+}
+
+#filterIcon {
+    font-size: var(--h3-font);
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+#filterIcon:hover {
+    color: var(--yellow-color);
 }
