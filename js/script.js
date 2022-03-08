@@ -71,6 +71,7 @@ class Book {
 
 const myLibrary = new Library()
 const bookObj = new Book()
+const testObj = new Book()
 
 Library.prototype.addBookToDb = function(book) {
     const bookElement = bookObj.createBookDisplay(book)
@@ -87,9 +88,14 @@ Library.prototype.removeBookFromDb = function(delBook) {
 }
 
 Library.prototype.displayLibrary = function() {
+    // remove form row from table
+    const theFormRow = document.getElementById('formRow')
+    tb.removeChild(theFormRow)
     this.db.forEach(book => {
         tb.appendChild(book.element)
     })
+    const formRow = testObj.createFormRow()
+    tb.appendChild(formRow)
 }
 
 Book.prototype.createBookDisplay = function(book) {
@@ -104,17 +110,8 @@ Book.prototype.createBookDisplay = function(book) {
     const tdAuthor      = document.createElement('td')
     const tdPages       = document.createElement('td')
     const tdRead        = document.createElement('td')
-    //      + inputs
-    const nameInput     = document.createElement('input')
-    const authorInput   = document.createElement('input')
-    const pagesInput    = document.createElement('input')
-    const readInput     = document.createElement('input')
     // -- set HTML attributes
     tr.setAttribute('data-index', index)
-    nameInput.setAttribute('type', 'text')
-    authorInput.setAttribute('type', 'text')
-    pagesInput.setAttribute('type', 'text')
-    readInput.setAttribute('type', 'checkbox')
     // ~~ delete button
     const deleteBtn     = document.createElement('button')
     deleteBtn.innerText = 'Delete'
@@ -131,17 +128,10 @@ Book.prototype.createBookDisplay = function(book) {
         myLibrary.removeBookFromDb(row)
     })
 
-    if (book) {
-        tdName.innerText    = name
-        tdAuthor.innerText  = author
-        tdPages.innerText   = pages
-        tdRead.innerText    = read
-    } else {
-        tdName.appendChild(nameInput)
-        tdAuthor.appendChild(authorInput)
-        tdPages.appendChild(pagesInput)
-        tdRead.appendChild(readInput)
-    }
+    tdName.innerText    = name
+    tdAuthor.innerText  = author
+    tdPages.innerText   = pages
+    tdRead.innerText    = read
 
     tr.appendChild(tdName)
     tr.appendChild(tdAuthor)
@@ -158,6 +148,36 @@ Book.prototype.createBookDisplay = function(book) {
 Book.prototype.removeBookDisplay = function(book) {
     tb.removeChild(book)
     return
+}
+
+Book.prototype.createFormRow = function() {
+    // -- create HTML elements
+    //      + table row & data
+    const tr            = document.createElement('tr')
+    const tdName        = document.createElement('td')
+    const tdAuthor      = document.createElement('td')
+    const tdPages       = document.createElement('td')
+    const tdRead        = document.createElement('td')
+    const nameInput     = document.createElement('input')
+    const authorInput   = document.createElement('input')
+    const pagesInput    = document.createElement('input')
+    const readInput     = document.createElement('input')
+    // -- set HTML attributes
+    nameInput.setAttribute('type', 'text')
+    authorInput.setAttribute('type', 'text')
+    pagesInput.setAttribute('type', 'text')
+    readInput.setAttribute('type', 'checkbox')
+
+    tdName.appendChild(nameInput)
+    tdAuthor.appendChild(authorInput)
+    tdPages.appendChild(pagesInput)
+    tdRead.appendChild(readInput)
+    tr.appendChild(tdName)
+    tr.appendChild(tdAuthor)
+    tr.appendChild(tdPages)
+    tr.appendChild(tdRead)
+
+    return tr
 }
 
 // FUNCTIONS
@@ -232,3 +252,11 @@ function submitForm(isValid, values) {
         resetForm()
     }
 }
+
+// INITIAL
+// --- create a form row with inputs to append to the table body
+//      + each time the displayLibrary() is called, the formRow
+//        is removed, then readded after the db is appended to DOM
+const formRow = testObj.createFormRow()
+formRow.setAttribute('id', 'formRow')
+tb.appendChild(formRow)
