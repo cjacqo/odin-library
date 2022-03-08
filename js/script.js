@@ -1,6 +1,11 @@
 // ELEMENTS
 // --- Query            : query elements like the form, form elements,
 //                        the submit button, etc...
+// ~~ details table 
+const bookTotal         = document.querySelector('.details-total.count')
+const readTotal         = document.querySelector('.details-read.count')
+const bookTotalTxt      = document.createElement('p')
+const readTotalTxt      = document.createElement('p')
 // ~~ form controls
 const nameCntrl         = document.getElementById('nameControl')
 const authorCntrl       = document.getElementById('authorControl')
@@ -61,6 +66,11 @@ class Library {
         this.count = function() {
             return this.db.length
         }
+        this.readCount = function() {
+            let totalRead       = this.db.filter(db => db.read)
+            let totalReadCount  = totalRead.length
+            return totalReadCount + ' / ' + this.db.length
+        }
     }
 }
 // --- Book             : takes a 'name', 'author', and pages number
@@ -85,6 +95,7 @@ const testObj = new Book()
 Library.prototype.addBookToDb = function(book) {
     const bookElement = bookObj.createBookDisplay(book)
     this.db.push({data: book, element: bookElement})
+    updateHeaderDetails()
 }
 
 Library.prototype.removeBookFromDb = function(delBook) {
@@ -98,6 +109,7 @@ Library.prototype.removeBookFromDb = function(delBook) {
     if (this.db.length === 0) {
         createEmptyRow()
     }
+    updateHeaderDetails()
 }
 
 Library.prototype.displayLibrary = function() {
@@ -112,6 +124,7 @@ Library.prototype.displayLibrary = function() {
     this.db.forEach(book => {
         tb.appendChild(book.element)
     })
+    updateHeaderDetails()
 }
 
 Book.prototype.createBookDisplay = function(book) {
@@ -279,7 +292,15 @@ function createEmptyRow() {
     tr.appendChild(td)
     tb.appendChild(tr)
 }
+// --- Update Header Details Table
+function updateHeaderDetails() {
+    bookTotalTxt.innerText = myLibrary.count()
+    readTotalTxt.innerText = myLibrary.readCount()
+    bookTotal.appendChild(bookTotalTxt)
+    readTotal.appendChild(readTotalTxt)
+}
 
 // INITIAL
 // --- create a empty form row with a button to open form
 createEmptyRow()
+updateHeaderDetails()
