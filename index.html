@@ -14,6 +14,18 @@
         <div class="item-container left-item header-title title-container">
             <h1>Library</h1>
         </div>
+        <div class="item-container middle-item header-data-view data-view-options-container flex">
+            <div class="flex-item view-option" id="table">
+                <button type="button" class="btn pointer" id="tableViewBtn" value="table">
+                    <i class="fa-solid fa-table"></i>
+                </button>
+            </div>
+            <div class="flex-item view-option" id="cards">
+                <button type="button" class="btn pointer" id="cardsViewBtn" value="cards">
+                    <i class="fa-solid fa-note-sticky"></i>
+                </button>
+            </div>
+        </div>
         <div class="item-container right-item header-library-details details-container grid">
             <div class="grid-item details-table-header">
                 <h4>Details</h4>
@@ -34,8 +46,8 @@
     </header>
     <!-- MAIN AREA -->
     <main class="page-area main-parent">
-        <section class="page-section table-section">
-            <table>
+        <section class="page-section table-section" id="sectionArea">
+            <table id="tableDisplayParent">
                 <colgroup>
                     <col>
                     <col>

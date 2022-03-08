@@ -1,11 +1,17 @@
 // ELEMENTS
 // --- Query            : query elements like the form, form elements,
 //                        the submit button, etc...
+// ~~ section area
+const sectionArea       = document.getElementById('sectionArea')
 // ~~ details table 
 const bookTotal         = document.querySelector('.details-total.count')
 const readTotal         = document.querySelector('.details-read.count')
 const bookTotalTxt      = document.createElement('p')
 const readTotalTxt      = document.createElement('p')
+// ~~ book data table
+const table             = document.getElementById('tableDisplayParent')
+const cardsDataSection = document.createElement('div')
+cardsDataSection.setAttribute('id', 'cardsDisplayParent')
 // ~~ form controls
 const nameCntrl         = document.getElementById('nameControl')
 const authorCntrl       = document.getElementById('authorControl')
@@ -21,6 +27,9 @@ const nameErrMsg        = document.getElementById('nameErr')
 const authorErrMsg      = document.getElementById('authorErr')
 const pagesErrMsg       = document.getElementById('pagesErr')
 const formErrMsgs       = [nameErrMsg, authorErrMsg, pagesErrMsg]   
+// ~~ data view buttons
+const tableViewBtn      = document.getElementById('tableViewBtn')
+const cardsViewBtn      = document.getElementById('cardsViewBtn')
 // ~~ submit button
 const submitBtn         = document.getElementById('submitBtn')
 // ~~ open form button
@@ -57,12 +66,23 @@ submitBtn.addEventListener('click', (e) => {
 openAddBookBtn.addEventListener('click', (e) => {
     console.log("hi")
 })
+// --- Table View Button
+tableViewBtn.addEventListener('click', (e) => {
+    myLibrary.dataView = 'table'
+    replaceDataView()
+})
+// --- Cards View Button
+cardsViewBtn.addEventListener('click', (e) => {
+    myLibrary.dataView = 'cards'
+    replaceDataView()
+})
 
 // OBJECTS
 // --- Library          : is a class to store an array of Book class objects
 class Library {
     constructor() {
         this.db = []
+        this.dataView = 'table'
         this.count = function() {
             return this.db.length
         }
@@ -91,6 +111,10 @@ class Book {
 const myLibrary = new Library()
 const bookObj = new Book()
 const testObj = new Book()
+
+Library.prototype.handleDataView = function(view) {
+
+}
 
 Library.prototype.addBookToDb = function(book) {
     const bookElement = bookObj.createBookDisplay(book)
@@ -299,6 +323,20 @@ function updateHeaderDetails() {
     readTotalTxt.innerText = myLibrary.readCount()
     bookTotal.appendChild(bookTotalTxt)
     readTotal.appendChild(readTotalTxt)
+}
+// --- Remove Current Data View and Replace
+function replaceDataView() {
+    switch(myLibrary.dataView) {
+        case 'table':
+            const cards = document.getElementById('cardsDisplayParent')
+            sectionArea.removeChild(cards)
+            sectionArea.appendChild(table)
+            return
+        case 'cards':
+            sectionArea.removeChild(table)
+            sectionArea.appendChild(cardsDataSection)
+            
+    }
 }
 
 // INITIAL
