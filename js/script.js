@@ -90,13 +90,15 @@ dataViewBtns.forEach(btn => {
 modalToggles.forEach(btn => {
     btn.addEventListener('click', (e) => {
         let value = e.currentTarget.value
-        console.log(value)
         if (value) {
             // --- call the toggleModal() function
             toggleModal(value)
+            // --- set the state to track modal open
+            myLibrary.modalOpen = value
         } else {
             addBookModal.classList.toggle('hidden')
             overlay.classList.toggle('hidden')
+            myLibrary.modalOpen = null
         }
     })
 })
@@ -107,6 +109,7 @@ class Library {
     constructor() {
         this.db = []
         this.dataView = 'table'
+        this.modalOpen = null
         this.swapView = function() {
             if (this.dataView === 'table') {
                 cardsView.classList.add('hidden')
@@ -430,12 +433,28 @@ function updateHeaderDetails() {
 function toggleModal(value) {
     switch(value) {
         case 'filter':
-            console.log(value)
-            filterBoard.classList.toggle('hidden')
+            // --- there is not modal open
+            if (!myLibrary.modalOpen || myLibrary.modalOpen === value) {
+                filterBoard.classList.toggle('hidden')
+            } else if (myLibrary.modalOpen === 'addBookForm') {
+                addBookModal.classList.toggle('hidden')
+                overlay.classList.toggle('hidden')
+                filterBoard.classList.toggle('hidden')
+            }
             return
         case 'addBookForm':
-            addBookModal.classList.toggle('hidden')
-            overlay.classList.toggle('hidden')
+            // --- there is not modal open
+            if (!myLibrary.modalOpen || myLibrary.modalOpen === value) {
+                addBookModal.classList.toggle('hidden')
+                overlay.classList.toggle('hidden')
+            } else if (myLibrary.modalOpen === 'filter') {
+                filterBoard.classList.toggle('hidden')
+                addBookModal.classList.toggle('hidden')
+                overlay.classList.toggle('hidden')
+            }
+            return
+        default:
+            return
     }
 }
 
