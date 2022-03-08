@@ -18,10 +18,6 @@ const pagesErrMsg   = document.getElementById('pagesErr')
 const formErrMsgs   = [nameErrMsg, authorErrMsg, pagesErrMsg]   
 // ~~ submit button
 const submitBtn     = document.getElementById('submitBtn')
-// ~~ delete button
-const deleteBtn     = document.createElement('button')
-deleteBtn.innerText = 'Delete'
-deleteBtn.setAttribute('type', 'button')
 // ~~ form attributes
 const [...nameMinMax]   = [nameInput.getAttribute('minlength'), nameInput.getAttribute('maxlength')]
 const [...authorMinMax] = [authorInput.getAttribute('minlength'), authorInput.getAttribute('maxlength')]
@@ -46,16 +42,6 @@ submitBtn.addEventListener('click', (e) => {
 
     submitForm(isValid, [nameValue, authorValue, pagesValue, readValue])
     myLibrary.displayLibrary(myLibrary)
-})
-// --- Delete Btn
-deleteBtn.addEventListener('click', (e) => {
-    // -- get the parent node (which is the tr)
-    //      + learned from https://stackoverflow.com/questions/13241005/add-delete-row-from-a-table
-    let row = e.target.parentNode
-    // -- pass row to remove function
-    //      + removes this child from the DOM
-    bookObj.removeBookDisplay(row)
-    myLibrary.removeBookFromDb(row)
 })
 
 // OBJECTS
@@ -106,6 +92,21 @@ Book.prototype.createBookDisplay = function(book) {
     authorInput.setAttribute('type', 'text')
     pagesInput.setAttribute('type', 'text')
     readInput.setAttribute('type', 'checkbox')
+    // ~~ delete button
+    const deleteBtn     = document.createElement('button')
+    deleteBtn.innerText = 'Delete'
+    deleteBtn.setAttribute('type', 'button')
+
+    // --- Delete Btn
+    deleteBtn.addEventListener('click', (e) => {
+        // -- get the parent node (which is the tr)
+        //      + learned from https://stackoverflow.com/questions/13241005/add-delete-row-from-a-table
+        let row = e.target.parentNode
+        // -- pass row to remove function
+        //      + removes this child from the DOM
+        bookObj.removeBookDisplay(row)
+        myLibrary.removeBookFromDb(row)
+    })
 
     if (book) {
         tdName.innerText    = name
