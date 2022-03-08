@@ -9,8 +9,8 @@
     <title>Odin | Library</title>
 </head>
 <body>
-    <!-- HEADER SECTION -->
-    <header class="page-section header-section flex">
+    <!-- HEADER AREA -->
+    <header class="page-area header-parent flex">
         <div class="item-container left-item header-title title-container">
             <h1>Library</h1>
         </div>
@@ -32,21 +32,23 @@
             </div>
         </div>
     </header>
-    <!-- MAIN SECTION -->
-    <main class="page-section main-section">
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Author</th>
-                    <th>Pages</th>
-                    <th>Read</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-        </table>
-        <button type="button" class="btn add-book">Add Book</button>
+    <!-- MAIN AREA -->
+    <main class="page-area main-parent">
+        <section class="page-section table-section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Author</th>
+                        <th>Pages</th>
+                        <th>Read</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+            <button type="button" class="btn add-book">Add Book</button>
+        </section>
         <form>
             <fieldset>
                 <div class="form-control" id="nameControl">
