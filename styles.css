@@ -16,6 +16,10 @@
     border: none;
 }
 
+.hidden {
+    display: none;
+}
+
 .pointer {
     cursor: pointer;
 }

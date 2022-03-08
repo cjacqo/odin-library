@@ -9,8 +9,7 @@ const readTotalTxt      = document.createElement('p')
 // ~~ table view parents
 const dataArea          = document.getElementById('sectionArea')
 const tableView         = document.getElementById('tableDisplayParent')
-const cardsView         = document.createElement('cardsDisplayParent')
-cardsView.setAttribute('id', 'cardsDisplayParent')
+const cardsView         = document.getElementById('cardsDisplayParent')
 // ~~ form controls
 const nameCntrl         = document.getElementById('nameControl')
 const authorCntrl       = document.getElementById('authorControl')
@@ -69,8 +68,12 @@ openAddBookBtn.addEventListener('click', (e) => {
 dataViewBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
         let value = e.currentTarget.value
-        myLibrary.dataView = value
-        myLibrary.swapView()
+        if (myLibrary.dataView === value) {
+            return
+        } else {
+            myLibrary.dataView = value
+            myLibrary.swapView()
+        }
     })
 })
 
@@ -82,11 +85,11 @@ class Library {
         this.dataView = 'table'
         this.swapView = function() {
             if (this.dataView === 'table') {
-                dataArea.removeChild(cardsView)
-                dataArea.appendChild(tableView)
+                cardsView.classList.add('hidden')
+                tableView.classList.remove('hidden')
             } else {
-                dataArea.removeChild(tableView)
-                dataArea.appendChild(cardsView)
+                tableView.classList.add('hidden')
+                cardsView.classList.remove('hidden')
             }
         }
         this.count = function() {
@@ -269,6 +272,7 @@ Book.prototype.removeBookDisplay = function(book) {
     myLibrary.db = myLibrary.db.filter(b => {
         let currentId = b.id
         let delBookId = book
+        console.log(b.cardElement)
         if (currentId !== delBookId) {
             return b
         } else {
