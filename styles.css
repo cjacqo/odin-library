@@ -267,7 +267,6 @@ label {
 #filterIcon {
     font-size: var(--h3-font);
     color: var(--primary-color);
-    cursor: pointer;
 }
 
 #filterIcon:hover {

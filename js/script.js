@@ -39,6 +39,10 @@ openAddBookBtn.classList.add('primary-btn', 'pointer')
 openAddBookBtn.setAttribute('type', 'button')
 openAddBookBtn.classList.add('btn', 'add-book')
 openAddBookBtn.innerText = 'Add Book'
+// ~~ toggle filter menu buttoon
+const toggleFilterBtn   = document.createElement('filterBtn')
+// ! -- modal toggle buttons array
+const modalToggles      = [smallAddBookBtn, toggleFilterBtn, overlay]
 // ~~ form attributes
 const [...nameMinMax]   = [nameInput.getAttribute('minlength'), nameInput.getAttribute('maxlength')]
 const [...authorMinMax] = [authorInput.getAttribute('minlength'), authorInput.getAttribute('maxlength')]
@@ -47,8 +51,8 @@ const [...pagesMinMax]  = [pagesInput.getAttribute('min'), pagesInput.getAttribu
 const tb = document.getElementById('tbody')
 
 // EVENT LISTENERS
-// --- Submit Btn       : listens to when the submitBtn is clicked to call
-//                        the addBook function
+// --- Submit Btn           : listens to when the submitBtn is clicked to call
+//                            the addBook function
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault()
     addBookModal.classList.toggle('hidden')
@@ -66,17 +70,8 @@ submitBtn.addEventListener('click', (e) => {
     submitForm(isValid, [nameValue, authorValue, pagesValue, readValue])
     myLibrary.displayLibrary(myLibrary)
 })
-// --- Open Add Book    : will open the form for the user to add a book
-openAddBookBtn.addEventListener('click', (e) => {
-    addBookModal.classList.toggle('hidden')
-    overlay.classList.toggle('hidden')
-})
-smallAddBookBtn.addEventListener('click', (e) => {
-    addBookModal.classList.toggle('hidden')
-    overlay.classList.toggle('hidden')
-})
-// --- Data View Buttons: will pass the value of the button to the library,
-//                        then call the swap function to swap the data rendered
+// --- Data View Buttons    : will pass the value of the button to the library,
+//                            then call the swap function to swap the data rendered
 dataViewBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
         let value = e.currentTarget.value
@@ -88,10 +83,19 @@ dataViewBtns.forEach(btn => {
         }
     })
 })
-// --- Click on Overlay : when the overlay is clicked, the form is closed
-overlay.addEventListener('click', () => {
-    addBookModal.classList.toggle('hidden')
-    overlay.classList.toggle('hidden')
+// --- Toggle Modal Buttons : call function if modal value is passed, or close
+//                            modal if overlay is clicked
+modalToggles.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        let value = e.currentTarget.value
+        if (value) {
+            // --- call the toggleModal() function
+            toggleModal(value)
+        } else {
+            addBookModal.classList.toggle('hidden')
+            overlay.classList.toggle('hidden')
+        }
+    })
 })
 
 // OBJECTS
@@ -418,6 +422,17 @@ function updateHeaderDetails() {
     readTotalTxt.innerText = myLibrary.readCount()
     bookTotal.appendChild(bookTotalTxt)
     readTotal.appendChild(readTotalTxt)
+}
+// --- Toggle Modal Function
+function toggleModal(value) {
+    switch(value) {
+        case 'filter':
+            console.log(value)
+            return
+        case 'addBookForm':
+            addBookModal.classList.toggle('hidden')
+            overlay.classList.toggle('hidden')
+    }
 }
 
 // INITIAL
