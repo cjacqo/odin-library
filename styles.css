@@ -26,6 +26,12 @@
     padding: 0;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
 .flex {
     display: flex;
 }
@@ -59,9 +65,9 @@
 
 /* HEADER SECTION */
 .header-parent {
+    flex: 0 1 auto;
     justify-content: space-around;
     align-items: center;
-    /* gap: 50vw; */
     padding: 0.5rem 0;
     margin-bottom: 0.5rem;
     box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
@@ -105,9 +111,10 @@
 /* MAIN SECTION */
 main {
     position: relative;
+    flex: 1 1 auto;
 }
 #sectionArea {
-    height: 600px;
+    height: 100%;
     background-color: var(--cream-color);
 }
 /* ---> table */
@@ -235,4 +242,10 @@ label {
     width: 100%;
     max-width: 350px;
     text-align: center;
+}
+
+/* FOOTER AREA */
+.footer-parent {
+    flex: 0 1 auto;
+    height: 50px;
 }

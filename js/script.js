@@ -83,6 +83,11 @@ dataViewBtns.forEach(btn => {
         }
     })
 })
+// --- Click on Overlay : when the overlay is clicked, the form is closed
+overlay.addEventListener('click', () => {
+    addBookModal.classList.toggle('hidden')
+    overlay.classList.toggle('hidden')
+})
 
 // OBJECTS
 // --- Library          : is a class to store an array of Book class objects
