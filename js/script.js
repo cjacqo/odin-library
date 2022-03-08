@@ -67,41 +67,55 @@ class Book {
 }
 
 const myLibrary = new Library()
-console.log(myLibrary)
 
 function createBookDisplay(book) {
-    const { name, author, pages } = book
-    const tr        = document.createElement('tr')
-    const tdName    = document.createElement('td')
-    const tdAuthor  = document.createElement('td')
-    const tdPages   = document.createElement('td')
-
+    // -- set an attribute for an index value based on the length of the library
+    const index = myLibrary.db.length
+    // -- destructure the book
+    const { name, author, pages, read } = book
+    // -- create HTML elements
+    //      + table row & data
+    const tr            = document.createElement('tr')
+    const tdName        = document.createElement('td')
+    const tdAuthor      = document.createElement('td')
+    const tdPages       = document.createElement('td')
+    const tdRead        = document.createElement('td')
+    //      + inputs
     const nameInput     = document.createElement('input')
     const authorInput   = document.createElement('input')
     const pagesInput    = document.createElement('input')
+    const readInput     = document.createElement('input')
+    //      + buttons
     const deleteBtn     = document.createElement('button')
     deleteBtn.innerText = 'Delete'
+    // -- set HTML attributes
+    tr.setAttribute('data-index', index)
     nameInput.setAttribute('type', 'text')
     authorInput.setAttribute('type', 'text')
     pagesInput.setAttribute('type', 'text')
+    readInput.setAttribute('type', 'checkbox')
     deleteBtn.setAttribute('type', 'button')
+    // -- event listeners
     deleteBtn.addEventListener('click', () => {
-        book.removeBookFromLibrary(book)
+        myLibrary.removeBookFromDb(book)
     })
 
     if (book) {
         tdName.innerText    = name
         tdAuthor.innerText  = author
         tdPages.innerText   = pages
+        tdRead.innerText    = read
     } else {
         tdName.appendChild(nameInput)
         tdAuthor.appendChild(authorInput)
         tdPages.appendChild(pagesInput)
+        tdRead.appendChild(readInput)
     }
 
     tr.appendChild(tdName)
     tr.appendChild(tdAuthor)
     tr.appendChild(tdPages)
+    tr.appendChild(tdRead)
 
     if (book) {
         tr.appendChild(deleteBtn)
@@ -112,6 +126,13 @@ function createBookDisplay(book) {
 Library.prototype.addBookToDb = function(book) {
     const bookElement = createBookDisplay(book)
     this.db.push({data: book, element: bookElement})
+}
+
+Library.prototype.removeBookFromDb = function(b) {
+    const bookElement = b
+    console.log(bookElement)
+    this.db = this.db.filter(book => book.data !== b)
+    myLibrary.displayLibrary()
 }
 
 Library.prototype.displayLibrary = function() {
