@@ -101,11 +101,31 @@ let modalDisplay = (function() {
 let myLibrary = (function() {
     let db    = []
     let count = 0
+
+    function _readCount() {
+        console.log(db)
+        let totalRead = db.filter(book => book.data.getRead() && book)
+        console.log(totalRead)
+        let totalReadCount  = totalRead.length
+        return totalReadCount + ' / ' + db.length
+    }
+
+    function _size() {
+        return db.length
+    }
     
     function _add(libObj) {
         db.push(libObj)
         let copiedArr = db
         return copiedArr
+    }
+
+    function _remove(id) {
+        // -- loop over the elements in the library (db),
+        //    return only the books that do not equal the param
+        db = db.filter(book => {
+            return book.index !== id
+        })
     }
 
     // --- create HTML elements
@@ -136,7 +156,7 @@ let myLibrary = (function() {
             let btn = e.currentTarget.value
             // -- pass row to remove function
             //      + removes this child from the DOM
-            bookObj.removeBookDisplay(btn)
+            _remove(id)
             // myLibrary.removeBookFromDb(row)
         })
 
@@ -220,6 +240,15 @@ let myLibrary = (function() {
             index       = _counter()
             let libObj  = _createLibraryObject(book, index)
             this.db     = _add(libObj)
+        },
+        remove: function(book) {
+            _remove(book)
+        },
+        size: function() {
+            _size()
+        },
+        readCount: function() {
+            _readCount()
         }
     }
 })()
@@ -270,3 +299,5 @@ const book1 = Book('Harry Potter', 'J.K. Rowling', 345, true, 'Fantasy')
 myLibrary.add(book1)
 buttons.createBtnsArr()
 dataDisplay.tableView()
+myLibrary.size()
+myLibrary.readCount()
