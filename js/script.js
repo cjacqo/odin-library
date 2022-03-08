@@ -93,25 +93,25 @@ Library.prototype.removeBookFromDb = function(delBook) {
     this.db = this.db.filter(book => {
         return book.element !== delBook
     })
+    // -- check the length of the db to see if a emptyRow
+    //    with a button to open the form should be added to DOM
     if (this.db.length === 0) {
         createEmptyRow()
     }
 }
 
 Library.prototype.displayLibrary = function() {
+    // -- grab the emptyRow with the button to open form
+    //    then check if it exists and the db length is not 0,
+    //    then remove from the table
     const remove = document.getElementById('removeWhenLibraryIsNotEmpty')
     if (this.db.length > 0 && remove) {
         tb.removeChild(remove)
     }
-    // remove form row from table
-    // const theFormRow = document.getElementById('formRow')
-    // tb.removeChild(theFormRow)
+    // -- append each book objects element to the table body
     this.db.forEach(book => {
         tb.appendChild(book.element)
     })
-    // const formRow = testObj.createFormRow()
-    // formRow.setAttribute('id', 'formRow')
-    // tb.appendChild(formRow)
 }
 
 Book.prototype.createBookDisplay = function(book) {
@@ -281,10 +281,5 @@ function createEmptyRow() {
 }
 
 // INITIAL
-// --- create a form row with inputs to append to the table body
-//      + each time the displayLibrary() is called, the formRow
-//        is removed, then readded after the db is appended to DOM
+// --- create a empty form row with a button to open form
 createEmptyRow()
-// const formRow = testObj.createFormRow()
-// formRow.setAttribute('id', 'formRow')
-// tb.appendChild(formRow)
