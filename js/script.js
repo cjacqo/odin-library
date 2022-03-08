@@ -10,6 +10,8 @@ const readTotalTxt      = document.createElement('p')
 const dataArea          = document.getElementById('sectionArea')
 const tableView         = document.getElementById('tableDisplayParent')
 const cardsView         = document.getElementById('cardsDisplayParent')
+// ~~ add book form
+const addBookModal      = document.getElementById('formModal')
 // ~~ form controls
 const nameCntrl         = document.getElementById('nameControl')
 const authorCntrl       = document.getElementById('authorControl')
@@ -61,7 +63,7 @@ submitBtn.addEventListener('click', (e) => {
 })
 // --- Open Add Book    : will open the form for the user to add a book
 openAddBookBtn.addEventListener('click', (e) => {
-    console.log("hi")
+    addBookModal.classList.toggle('hidden')
 })
 // --- Data View Buttons: will pass the value of the button to the library,
 //                        then call the swap function to swap the data rendered
