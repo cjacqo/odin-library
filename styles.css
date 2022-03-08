@@ -74,6 +74,10 @@
 }
 
 /* MAIN SECTION */
+#sectionArea {
+    height: 600px;
+    background-color: coral;
+}
 /* ---> table */
 #emptyRow {
     width: 100%;
@@ -94,13 +98,24 @@ table {
     table-layout: fixed;
     width: 100%;
 }
+thead {
+    background-color: #fff;
+}
 th, td {
     padding: 0.25rem;
     text-align: left;
     border: 1px solid #ccc;
 }
+tbody {
+}
+tr {
+    display: table-row;
+}
 tbody tr:nth-child(odd) {
     background: #eee;
+}
+tbody tr:nth-child(even) {
+    background: #fff;
 }
 .w-hundred {
     width: 100px;

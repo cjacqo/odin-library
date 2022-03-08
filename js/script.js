@@ -159,18 +159,16 @@ Library.prototype.removeBookFromDb = function(delBook) {
 }
 
 Library.prototype.displayLibrary = function() {
-    // -- grab the emptyRow with the button to open form
-    //    then check if it exists and the db length is not 0,
-    //    then remove from the table
-    const remove = document.getElementById('removeWhenLibraryIsNotEmpty')
-    if (this.db.length > 0 && remove) {
-        tb.removeChild(remove)
-    }
     // -- append each book objects element to the table body
     this.db.forEach(book => {
         tb.appendChild(book.tableElement)
         cardsView.appendChild(book.cardElement)
     })
+    // --- remove the empty row with the button
+    const remove = document.getElementById('removeWhenLibraryIsNotEmpty')
+    tb.removeChild(remove)
+    // --- create an empty row with the button
+    createEmptyRow()
     updateHeaderDetails()
 }
 
