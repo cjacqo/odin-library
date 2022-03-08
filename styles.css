@@ -14,3 +14,48 @@
 .grid {
     display: grid;
 }
+
+/* HEADER SECTION */
+.header-section {
+    justify-content: space-around;
+    align-items: center;
+    gap: 50vw;
+    padding: 0.5rem 0;
+    margin-bottom: 0.5rem;
+    box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
+}
+/* ---> header title */
+
+/* ---> header details */
+.header-library-details {
+    grid-template-columns: 50px 50px;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-areas: 
+        "header header"
+        "totalTitle total"
+        "readTitle read";
+}
+.header-library-details > .grid-item {
+    /* padding: 0.25rem 0; */
+}
+.details-table-header {
+    grid-area: header;
+    text-align: center;
+}
+.details-total.title {
+    grid-area: totalTitle;
+}
+.details-total.count {
+    grid-area: total;
+}
+.details-read.title {
+    grid-area: readTitle;
+}
+.details-read.count {
+    grid-area: read;
+}
+
+.details-total.count,
+.details-read.count {
+    text-align: right;
+}
