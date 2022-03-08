@@ -69,6 +69,26 @@ class Book {
 const myLibrary = new Library()
 const bookObj = new Book()
 
+Library.prototype.addBookToDb = function(book) {
+    const bookElement = bookObj.createBookDisplay(book)
+    this.db.push({data: book, element: bookElement})
+    console.log(this.db)
+}
+
+Library.prototype.removeBookFromDb = function(delBook) {
+    // -- loop over the elements in the library (db),
+    //    return only the books that do not equal the param
+    this.db = this.db.filter(book => {
+        return book.element !== delBook
+    })
+}
+
+Library.prototype.displayLibrary = function(index) {
+    this.db.forEach(book => {
+        tb.appendChild(book.element)
+    })
+}
+
 Book.prototype.createBookDisplay = function(book) {
     // -- set an attribute for an index value based on the length of the library
     const index = myLibrary.db.length
@@ -135,35 +155,6 @@ Book.prototype.createBookDisplay = function(book) {
 Book.prototype.removeBookDisplay = function(book) {
     tb.removeChild(book)
     return
-}
-
-Library.prototype.addBookToDb = function(book) {
-    const bookElement = bookObj.createBookDisplay(book)
-    this.db.push({data: book, element: bookElement})
-    console.log(this.db)
-}
-
-Library.prototype.removeBookFromDb = function(delBook) {
-    // -- loop over the elements in the library (db),
-    //    return only the books that do not equal the param
-    this.db = this.db.filter(book => {
-        return book.element !== delBook
-    })
-}
-
-Library.prototype.displayLibrary = function(index) {
-    this.db.forEach(book => {
-        tb.appendChild(book.element)
-    })
-}
-
-Book.prototype.removeBookFromLibrary = function(book) {
-    let copyLibrary = myLibrary.filter(b => {
-        console.log(b === book)
-        return b !== book
-    })
-    console.log(copyLibrary)
-    displayLibrary(copyLibrary)
 }
 
 // FUNCTIONS
