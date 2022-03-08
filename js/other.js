@@ -1,3 +1,15 @@
+const htmlElements = (type) => {
+    const elements      = document.querySelectorAll(`${type}`)
+    const getElements   = () => elements
+    return { getElements, elements }
+}
+
+const forms     = htmlElements('form')
+const btnEl     = htmlElements('button')
+forms.getElements()
+btnEl.getElements()
+const dataSections = document.querySelectorAll('.data-section')
+
 let dataDisplay = (function() {
     let dataView = 'table'
     
@@ -23,9 +35,36 @@ let modalDisplay = (function() {
     let isOpen = false
     let modal  = null
 
+    function _handleToggle(value) {
+        if (value === modal) {
+            isOpen = false
+            modal  = null
+        } else {
+            isOpen = true
+            modal  = value
+        }
+    }
+
+    function _handleClasses(arr) {
+        arr.forEach(form => {
+            let [...id] = form.classList
+            if (id.includes(modal) || isOpen) {
+                form.classList.remove('hidden')
+                console.log(form)
+            } else {
+                if (id.includes(modal) || !isOpen) {
+                    form.classList.toggle('hidden')
+                    console.log(form)
+                }
+            }
+        })
+    }
+
     return {
         toggleModal: function(modalValue) {
-            console.log(modalValue)
+            _handleToggle(modalValue)
+            console.log(isOpen)
+            _handleClasses(forms.getElements())
         }
     }
 })()

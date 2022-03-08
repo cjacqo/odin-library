@@ -47,7 +47,7 @@
     <!-- MAIN AREA -->
     <main class="page-area main-parent">
         <section class="page-section table-section" id="sectionArea">
-            <table id="tableDisplayParent">
+            <table class="data-section" id="tableDisplayParent">
                 <colgroup>
                     <col>
                     <col>
@@ -66,9 +66,9 @@
                 </thead>
                 <tbody id="tbody"></tbody>
             </table>
-            <div class="hidden" id="cardsDisplayParent"></div>
+            <div class="hidden data-section" id="cardsDisplayParent"></div>
         </section>
-        <form class="modal hidden" id="formModal">
+        <form class="modal hidden add-form" id="formModal">
             <fieldset>
                 <div class="form-control" id="nameControl">
                     <label for="name">Name</label>
@@ -100,11 +100,13 @@
     <footer class="page-area footer-parent flex">
         <div class="menu-btns flex">
             <div><button class="btn icon-btn filter-btn pointer" type="button" id="filterBtn" value="filter"><i class="fa-solid fa-filter" id="filterIcon"></i></button></div>
-            <div><button class="btn primary-btn add-book pointer" type="button" id="smallAddBtn" value="addBookForm">Add Book</div>
+            <div><button class="btn primary-btn add-book pointer" type="button" id="smallAddBtn" value="add-form">Add Book</div>
         </div>
     </footer>
     <div class="hidden" id="overlay"></div>
-    <div class="hidden" id="filterControls"></div>
+    <div class="hidden" id="filterControls">
+        <form class="modal hidden filter-form" id="filterFormModal"></form>
+    </div>
     <!-- <script src="js/script.js"></script> -->
     <script src="js/other.js"></script>
 </body>
