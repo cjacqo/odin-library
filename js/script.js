@@ -2,22 +2,27 @@
 // --- Query            : query elements like the form, form elements,
 //                        the submit button, etc...
 // ~~ form controls
-const nameCntrl     = document.getElementById('nameControl')
-const authorCntrl   = document.getElementById('authorControl')
-const pagesCntrl    = document.getElementById('pagesControl')
-const formCntrls    = [nameCntrl, authorCntrl, pagesCntrl]
+const nameCntrl         = document.getElementById('nameControl')
+const authorCntrl       = document.getElementById('authorControl')
+const pagesCntrl        = document.getElementById('pagesControl')
+const formCntrls        = [nameCntrl, authorCntrl, pagesCntrl]
 // ~~ form elements
-const nameInput     = document.getElementById('name')
-const authorInput   = document.getElementById('author')
-const pagesInput    = document.getElementById('pages')
-const readInput     = document.getElementById('is_read')
+const nameInput         = document.getElementById('name')
+const authorInput       = document.getElementById('author')
+const pagesInput        = document.getElementById('pages')
+const readInput         = document.getElementById('is_read')
 // ~~ error messages
-const nameErrMsg    = document.getElementById('nameErr')
-const authorErrMsg  = document.getElementById('authorErr')
-const pagesErrMsg   = document.getElementById('pagesErr')
-const formErrMsgs   = [nameErrMsg, authorErrMsg, pagesErrMsg]   
+const nameErrMsg        = document.getElementById('nameErr')
+const authorErrMsg      = document.getElementById('authorErr')
+const pagesErrMsg       = document.getElementById('pagesErr')
+const formErrMsgs       = [nameErrMsg, authorErrMsg, pagesErrMsg]   
 // ~~ submit button
-const submitBtn     = document.getElementById('submitBtn')
+const submitBtn         = document.getElementById('submitBtn')
+// ~~ open form button
+const openAddBookBtn    = document.createElement('button')
+openAddBookBtn.setAttribute('type', 'button')
+openAddBookBtn.classList.add('btn', 'add-book')
+openAddBookBtn.innerText = 'Library is Empty: Add a Book'
 // ~~ form attributes
 const [...nameMinMax]   = [nameInput.getAttribute('minlength'), nameInput.getAttribute('maxlength')]
 const [...authorMinMax] = [authorInput.getAttribute('minlength'), authorInput.getAttribute('maxlength')]
@@ -42,6 +47,10 @@ submitBtn.addEventListener('click', (e) => {
 
     submitForm(isValid, [nameValue, authorValue, pagesValue, readValue])
     myLibrary.displayLibrary(myLibrary)
+})
+// --- Open Add Book    : will open the form for the user to add a book
+openAddBookBtn.addEventListener('click', (e) => {
+    console.log("hi")
 })
 
 // OBJECTS
@@ -76,7 +85,6 @@ const testObj = new Book()
 Library.prototype.addBookToDb = function(book) {
     const bookElement = bookObj.createBookDisplay(book)
     this.db.push({data: book, element: bookElement})
-    console.log(this.db)
 }
 
 Library.prototype.removeBookFromDb = function(delBook) {
@@ -85,18 +93,25 @@ Library.prototype.removeBookFromDb = function(delBook) {
     this.db = this.db.filter(book => {
         return book.element !== delBook
     })
+    if (this.db.length === 0) {
+        createEmptyRow()
+    }
 }
 
 Library.prototype.displayLibrary = function() {
+    const remove = document.getElementById('removeWhenLibraryIsNotEmpty')
+    if (this.db.length > 0 && remove) {
+        tb.removeChild(remove)
+    }
     // remove form row from table
-    const theFormRow = document.getElementById('formRow')
-    tb.removeChild(theFormRow)
+    // const theFormRow = document.getElementById('formRow')
+    // tb.removeChild(theFormRow)
     this.db.forEach(book => {
         tb.appendChild(book.element)
     })
-    const formRow = testObj.createFormRow()
-    formRow.setAttribute('id', 'formRow')
-    tb.appendChild(formRow)
+    // const formRow = testObj.createFormRow()
+    // formRow.setAttribute('id', 'formRow')
+    // tb.appendChild(formRow)
 }
 
 Book.prototype.createBookDisplay = function(book) {
@@ -253,11 +268,23 @@ function submitForm(isValid, values) {
         resetForm()
     }
 }
+// --- Create Empty Row :
+function createEmptyRow() {
+    const tr = document.createElement('tr')
+    const td = document.createElement('td')
+    tr.setAttribute('id', 'removeWhenLibraryIsNotEmpty')
+    td.setAttribute('id', 'emptyRow')
+    td.setAttribute('colspan', '5')
+    td.appendChild(openAddBookBtn)
+    tr.appendChild(td)
+    tb.appendChild(tr)
+}
 
 // INITIAL
 // --- create a form row with inputs to append to the table body
 //      + each time the displayLibrary() is called, the formRow
 //        is removed, then readded after the db is appended to DOM
-const formRow = testObj.createFormRow()
-formRow.setAttribute('id', 'formRow')
-tb.appendChild(formRow)
+createEmptyRow()
+// const formRow = testObj.createFormRow()
+// formRow.setAttribute('id', 'formRow')
+// tb.appendChild(formRow)
