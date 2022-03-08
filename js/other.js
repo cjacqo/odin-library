@@ -34,37 +34,71 @@ let dataDisplay = (function() {
 let modalDisplay = (function() {
     let isOpen = false
     let modal  = null
-
-    function _handleToggle(value) {
-        if (value === modal) {
-            isOpen = false
-            modal  = null
-        } else {
-            isOpen = true
-            modal  = value
-        }
+    let theModals = {
+        addFormModal    : document.getElementById('formModal'),
+        filtersFormModal: document.getElementById('filterControls')
     }
 
-    function _handleClasses(arr) {
-        arr.forEach(form => {
-            let [...id] = form.classList
-            if (id.includes(modal) || isOpen) {
-                form.classList.remove('hidden')
-                console.log(form)
+    function _handleToggle(value) {
+        modal = value
+    }
+
+    function _handleClasses() {
+        let theArr = Object.entries(theModals)
+        if (theArr[0][0] === modal) {
+            if (!isOpen) {
+                theArr[0][1].classList.remove('hidden')
+                isOpen = true
             } else {
-                if (id.includes(modal) || !isOpen) {
-                    form.classList.toggle('hidden')
-                    console.log(form)
+                if (isOpen) {
+                    theArr[0][1].classList.add('hidden')
+                    if (!theArr[1][1].classList.contains('hidden')) {
+                        theArr[1][1].classList.add('hidden')
+                    }
+                    isOpen = false
+                } else {
+                    theArr[1][1].classList.toggle('hidden')
+                    isOpen = true
                 }
+                // theArr[0][1].classList.toggle('hidden')
             }
-        })
+        } else if (theArr[1][0] === modal) {
+            if (!isOpen) {
+                theArr[1][1].classList.remove('hidden')
+                // theArr[1][1].classList.toggle('hidden')
+                isOpen = true
+            } else {
+                if (isOpen) {
+                    theArr[1][1].classList.add('hidden')
+                    if (!theArr[0][1].classList.contains('hidden')) {
+                        theArr[0][1].classList.add('hidden')
+                    }
+                    isOpen = false
+                } else {
+                    theArr[0][1].classList.toggle('hidden')
+                    isOpen = true
+                }
+                // theArr[1][1].classList.toggle('hidden')
+            }
+        }
+        // arr.forEach(form => {
+        //     let [...id] = form.classList
+        //     if (id.includes(modal) || isOpen) {
+        //         form.classList.remove('hidden')
+        //         console.log(form)
+        //     } else {
+        //         if (id.includes(modal) || !isOpen) {
+        //             form.classList.toggle('hidden')
+        //             console.log(form)
+        //         }
+        //     }
+        // })
     }
 
     return {
         toggleModal: function(modalValue) {
             _handleToggle(modalValue)
-            console.log(isOpen)
-            _handleClasses(forms.getElements())
+            _handleClasses()
         }
     }
 })()
