@@ -69,6 +69,7 @@ const [...authorMinMax] = [authorInput.getAttribute('minlength'), authorInput.ge
 const [...pagesMinMax]  = [pagesInput.getAttribute('min'), pagesInput.getAttribute('max')]
 // ~~ table
 const tb = document.getElementById('tbody')
+const getEl = document.getElementById('emptyLibraryModal')
 
 // EVENT LISTENERS
 // --- Submit Btn           : listens to when the submitBtn is clicked to call
@@ -88,7 +89,7 @@ submitBtn.addEventListener('click', (e) => {
     const isValid       = validateForm(nameValue, authorValue, pagesValue)
 
     submitForm(isValid, [nameValue, authorValue, pagesValue, readValue])
-    myLibrary.displayLibrary(myLibrary)
+    myLibrary.displayLibrary()
 })
 // --- Data View Buttons    : will pass the value of the button to the library,
 //                            then call the swap function to swap the data rendered
@@ -183,7 +184,7 @@ Library.prototype.addBookToDb = function(book) {
     //     and add to the objec that is pushed
     const bookTableElement  = bookObj.createRowBookDisplay(book, id)
     const bookCardElement   = bookObj.createCardBookDisplay(book, id)
-    
+
     this.db.push({data: book, tableElement: bookTableElement, cardElement: bookCardElement, id: id})
     updateHeaderDetails()
 }
@@ -197,7 +198,7 @@ Library.prototype.removeBookFromDb = function(delBook) {
     // -- check the length of the db to see if a emptyRow
     //    with a button to open the form should be added to DOM
     if (this.db.length === 0) {
-        createEmptyRow()
+        getEl.classList.toggle('hidden')
     }
     updateHeaderDetails()
 }
@@ -209,10 +210,10 @@ Library.prototype.displayLibrary = function() {
         cardsView.appendChild(book.cardElement)
     })
     // --- remove the empty row with the button
-    const remove = document.getElementById('removeWhenLibraryIsNotEmpty')
-    tb.removeChild(remove)
+    // const remove = document.getElementById('removeWhenLibraryIsNotEmpty')
+    // tb.removeChild(remove)
     // --- create an empty row with the button
-    createEmptyRow()
+    // createEmptyRow()
     updateHeaderDetails()
 }
 
@@ -459,6 +460,17 @@ function createEmptyRow() {
     tr.appendChild(td)
     tb.appendChild(tr)
 }
+// --- Create Display if Empty      : creates and appends HTML element that fills the section
+//                                    if the library is empty
+// function displayEmptyModal() {
+//     const emptyModal = document.createElement('div')
+//     const emptyModalText = document.createElement('div')
+//     emptyModal.setAttribute('id', 'emptyLibraryModal')
+//     emptyModalText.setAttribute('id', 'emptyModalText')
+//     emptyModalText.innerHTML = 'Add a Book'
+//     emptyModal.appendChild(emptyModalText)
+//     tb.appendChild(emptyModal)
+// }
 // --- Update Header Details Table  : will update the count HTML in the details table
 function updateHeaderDetails() {
     bookTotalTxt.innerText = myLibrary.count()
@@ -568,6 +580,5 @@ function createFilterOptions() {
 
 // INITIAL
 // --- create a empty form row with a button to open form
-createEmptyRow()
 createFilterOptions()
 updateHeaderDetails()

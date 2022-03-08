@@ -153,6 +153,8 @@ th, td {
     border: 1px solid #ccc;
 }
 tbody {
+    width: 100%;
+    height: 100%;
 }
 tr {
     display: table-row;
@@ -170,6 +172,22 @@ tbody tr:nth-child(even) {
 .w-fifty {
     width: 50px;
     text-align: center;
+}
+#emptyLibraryModal {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#emptyLibraryModal.hidden {
+    display: none;
+}
+#emptyModalText {
 }
 .table-section > table {
     /* width: 100%; */
@@ -263,6 +281,7 @@ label {
     bottom: 0;
     background-color: #fff;
     z-index: 1;
+    border-top: 3px solid #333;
 }
 
 .menu-btns {
@@ -293,6 +312,9 @@ label {
     flex: 1;
     margin: 0;
 }
+.filter-form > fieldset > legend {
+    padding: 1rem 0;
+}
 .filter-control {
     display: flex;
     justify-content: space-between;
@@ -316,7 +338,6 @@ label {
     width: 100%;
     height: 100%;
     display: flex;
-    /* justify-content: flex-end; */
     align-items: center;
     padding-left: 3rem;
 }
@@ -337,16 +358,6 @@ label {
     border: 1px solid #ddd;
     border-radius: 50%;
 }
-/* .filter-control > label::before {
-    content: '';
-    border-radius: 50%;
-    width: 100%;
-    height: 100%;
-}
-.filter-control > label > input[type=checkbox]:checked {
-    content: '\2022';
-    color: #f3f3f3;
-} */
 #filterControls.hidden {
     display: block;
     z-index: 0;
@@ -363,4 +374,5 @@ label {
     height: 80vh;
     background-color: white;
     transition: all 300ms ease-out;
+    border-top: 15px solid var(--yellow-color)
 }
