@@ -500,27 +500,42 @@ function toggleModal(value) {
 function createFilterOptions() {
     const form                = document.createElement('form')
     const categoriesFieldSet  = document.createElement('fieldset')
-    const columnsFieldSet  = document.createElement('fieldset')
+    const categoriesLegend    = document.createElement('legend')
+    const columnsFieldSet     = document.createElement('fieldset')
+    const columnsLegend       = document.createElement('legend')
+    form.classList.add('filter-form')
+    categoriesLegend.innerText = 'Categories'
+    columnsLegend.innerText    = 'Columns'
+
 
     // --- loop over array of category filters
     filterParams.categories.forEach(cat => {
         const formCntrlId = cat.name.toLowerCase()
-        const formCntrl = document.createElement('div')
-        const label     = document.createElement('label')
-        const checkBox  = document.createElement('input')
+        const formCntrl   = document.createElement('div')
+        const label       = document.createElement('label')
+        const checkBox    = document.createElement('input')
         formCntrl.classList.add('filter-control')
         formCntrl.setAttribute('id', `${formCntrlId}FilterControl`)
-        label.innerHTML = cat.name
         label.setAttribute('for', formCntrlId)
+        label.setAttribute('data-text', cat.name)
         checkBox.setAttribute('type', 'checkbox')
         checkBox.setAttribute('name', formCntrlId)
         checkBox.setAttribute('id', formCntrlId)
         checkBox.setAttribute('value', formCntrlId)
+        checkBox.style.backgroundColor = '#fff'
+        checkBox.style.border = `3px solid ${cat.color}`
         checkBox.addEventListener('click', () => {
+            if (checkBox.checked) {
+                checkBox.style.backgroundColor = cat.color
+                checkBox.style.border = `3px solid #fff`
+            } else {
+                checkBox.style.backgroundColor = '#fff'
+                checkBox.style.border = `3px solid ${cat.color}`
+            }
             myLibrary.filterLibrary(checkBox.checked, formCntrlId, 'categories')
         })
+        label.appendChild(checkBox)
         formCntrl.appendChild(label)
-        formCntrl.appendChild(checkBox)
         categoriesFieldSet.appendChild(formCntrl)
     })
     // --- loop over array of column filters
@@ -544,6 +559,8 @@ function createFilterOptions() {
         formCntrl.appendChild(radio)
         columnsFieldSet.appendChild(formCntrl)
     })
+    categoriesFieldSet.append(categoriesLegend)
+    columnsFieldSet.append(columnsLegend)
     form.appendChild(categoriesFieldSet)
     form.appendChild(columnsFieldSet)
     filterBoard.appendChild(form)
