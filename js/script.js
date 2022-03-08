@@ -45,7 +45,7 @@ submitBtn.addEventListener('click', (e) => {
 })
 
 // OBJECTS
-// --- Library          : is class to store an array of Book class objects
+// --- Library          : is a class to store an array of Book class objects
 class Library {
     constructor() {
         this.db = []
