@@ -22,6 +22,8 @@ const submitBtn     = document.getElementById('submitBtn')
 const [...nameMinMax]   = [nameInput.getAttribute('minlength'), nameInput.getAttribute('maxlength')]
 const [...authorMinMax] = [authorInput.getAttribute('minlength'), authorInput.getAttribute('maxlength')]
 const [...pagesMinMax]  = [pagesInput.getAttribute('min'), pagesInput.getAttribute('max')]
+// ~~ table
+const tb = document.getElementById('tbody')
 
 // EVENT LISTENERS
 // --- Submit Btn       : listens to when the submitBtn is clicked to call
@@ -38,31 +40,8 @@ submitBtn.addEventListener('click', (e) => {
     //   error messages where needed
     const isValid       = validateForm(nameValue, authorValue, pagesValue)
 
-    // - check if an error message exists, then loop through object to display
-    //   message
-    if (isValid.nameErr || isValid.authorErr || isValid.pagesErr) {
-        // - get values of object to an array,
-        //      + loop over the messages
-        //      + return messages whose index value of 1 is TRUE
-        const errorMessages = Object.entries(isValid)
-        errorMessages.forEach(msg => {
-            let [el] = formErrMsgs.filter(el => el.getAttribute('id') === msg[0])
-            if (msg[1]) {
-                el.innerText = msg[1]
-            } else {
-                el.innerText = ''
-            }
-        })
-    } else {
-        // - clear error messages
-        formErrMsgs.forEach(el => {
-            el.innerText = ''
-        })
-        // - if no errors, create book object
-        const book = new Book(nameValue, authorValue, pagesValue, readValue)
-        console.log(book)
-        console.log(book.info())
-    }
+    submitForm(isValid, [nameValue, authorValue, pagesValue, readValue])
+    displayLibrary(myLibrary)
 })
 
 // ARRAYS
@@ -70,6 +49,12 @@ submitBtn.addEventListener('click', (e) => {
 let myLibrary = []
 
 // OBJECTS
+// --- Library          : is class to store an array of Book class objects
+class Library {
+    constructor() {
+        this.db = []
+    }
+}
 // --- Book             : takes a 'name', 'author', and pages number
 //                          + has method to return a string
 class Book {
@@ -135,19 +120,18 @@ Book.prototype.removeBookFromLibrary = function(book) {
 }
 
 function displayLibrary(arr) {
-    const tb = document.getElementById('tbody')
     console.log(arr)
-    if (arr) {
-        arr.map(b => {
-            console.log(b)
-            const bookElement = createBookDisplay(b)
-            tb.appendChild(bookElement)
-        })
-    } else {
-        console.log("Hi")
-        const addBookElement = createBookDisplay()
-        tb.appendChild(addBookElement)
-    }
+    // if (arr) {
+    //     arr.map(b => {
+    //         console.log(b)
+    //         const bookElement = createBookDisplay(b)
+    //         tb.appendChild(bookElement)
+    //     })
+    // } else {
+    //     console.log("Hi")
+    //     const addBookElement = createBookDisplay()
+    //     tb.appendChild(addBookElement)
+    // }
     
     return
 }
@@ -162,8 +146,26 @@ function addBookToLibrary(book) {
 //                          + accepts the values of the for inputs
 //                              to create a book object and then push to
 //                              the library
-function addBook() {
-
+function addBook(book) {
+    let copyMyLibrary = myLibrary
+    console.log(copyMyLibrary)
+    copyMyLibrary.push(book)
+    console.log(copyMyLibrary)
+    myLibrary = copyMyLibrary
+}
+// --- Clear Errors     : loop over the error message elements array to clear
+function clearErrors() {
+    formErrMsgs.forEach(el => {
+        el.innerText = ''
+    })
+}
+// --- Reset Form       : query all inputs, loop over the inputs and clear 
+//                        the text
+function resetForm() {
+    const formInputs = document.querySelectorAll('.input')
+    formInputs.forEach(input => {
+        input.value = ''
+    })
 }
 // --- Validate Form    : checks form values to see if inputs are valid,
 //                        returns object of messages
@@ -191,9 +193,38 @@ function validateForm(name, author, pages) {
     // return errMsg object
     return errMsg
 }
-
+// --- Submit Form      : displays error messages, calls to reset errors,
+//                        and creates a book object, adds it to the library,
+//                        then resets the form input values
+function submitForm(isValid, values) {
+    // - check if an error message exists, then loop through object to display
+    //   message
+    if (isValid.nameErr || isValid.authorErr || isValid.pagesErr) {
+        // - get values of object to an array,
+        //      + loop over the messages
+        //      + return messages whose index value of 1 is TRUE
+        const errorMessages = Object.entries(isValid)
+        errorMessages.forEach(msg => {
+            let [el] = formErrMsgs.filter(el => el.getAttribute('id') === msg[0])
+            if (msg[1]) {
+                el.innerText = msg[1]
+            } else {
+                el.innerText = ''
+            }
+        })
+    } else {
+        // - if no errors
+        //      + clear error messages
+        clearErrors()
+        //      + clear input values
+        //      + create book object and add to library
+        const book = new Book(values[0], values[1], values[2], values[3])
+        addBook(book)
+        resetForm()
+    }
+}
 
 let hp = new Book('Harry Potter', 'J.K. Rowling', 245)
 let lotr = new Book('The Lord of the Rings', 'J.R.R. Tolkien', 450)
-addBookToLibrary(hp)
-addBookToLibrary(lotr)
+// addBookToLibrary(hp)
+// addBookToLibrary(lotr)
