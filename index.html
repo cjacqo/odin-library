@@ -68,7 +68,8 @@
             </table>
             <div class="data-section" id="cardsDisplayParent"></div>
         </section>
-        <form class="modal hidden add-form modalToggler" id="formModal">
+        <form class="modal add-form modalToggler" id="formModal">
+            <span class="close-modal"></span>
             <fieldset>
                 <div class="form-control" id="nameControl">
                     <label for="name">Name</label>
@@ -103,9 +104,10 @@
             <div><button class="btn primary-btn add-book pointer" type="button" id="smallAddBtn" value="addFormModal">Add Book</div>
         </div>
     </footer>
-    <div class="hidden" id="overlay"></div>
-    <div class="hidden modalToggler filter-form-container" id="filterControls">
-        <form class="modal hidden filter-form" id="filterFormModal"></form>
+    <div class="modal" id="overlay"></div>
+    <div class="modalToggler modal filter-form-container" id="filterControls">
+        <span class="close-modal"></span>
+        <form class="modal filter-form" id="filterFormModal"></form>
     </div>
     <!-- <script src="js/script.js"></script> -->
     <!-- <script src="js/other.js"></script> -->

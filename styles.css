@@ -208,6 +208,7 @@ tbody tr:nth-child(even) {
     flex-direction: column;
     justify-content: space-between;
     z-index: 2;
+    display: none;
 }
 #overlay {
     position: absolute;
@@ -218,8 +219,7 @@ tbody tr:nth-child(even) {
     background-color: rgba(0,0,0,0.7);
     z-index: 1;
 }
-#formModal.hidden,
-#overlay.hidden {
+#formModal.hidden {
     display: none;
 }
 
@@ -358,7 +358,7 @@ label {
     border: 1px solid #ddd;
     border-radius: 50%;
 }
-#filterControls.hidden {
+/* #filterControls.hidden {
     display: block;
     z-index: 0;
     position: absolute;
@@ -366,8 +366,9 @@ label {
     height: 0;
     background-color: white;
     transition: all 600ms ease-out;
-}
+} */
 #filterControls {
+    display: none;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -375,4 +376,7 @@ label {
     background-color: white;
     transition: all 300ms ease-out;
     border-top: 15px solid var(--yellow-color)
+}
+.modal {
+    display: none;
 }

@@ -62,17 +62,23 @@ const library = (() => {
     const viewCntrl = (() => {
         // --- get HTML 
         //     >> modal containers
-        const [..._modalForms]      = [[document.querySelector('.add-form'), document.getElementById('overlay')],[document.querySelector('.filter-form-container')]]
+        const modalsArr             = document.querySelectorAll('.modal')
         //     >> data containers
         const _tableContainer       = document.getElementById('tableDisplayParent')
         const _cardsContainer       = document.getElementById('cardsDisplayParent')
         let _modalOpen              = false
         let _currentModalView       = null
+        let _prevModalView          = null
         let _currentDataView        = 'table'
         // @@ GETTERS
         const getCurrentModalView   = () => _currentModalView
         const getCurrentDataView    = () => _currentDataView
         // @@ SETTERS
+        const setCurrentModalView   = (selection) => {
+            _prevModalView   = _currentDataView
+            _currentModalView = selection
+            _openModal()
+        }
         const setCurrentDataView    = (selection) => {
             _currentDataView = selection
             _displayDataView()
@@ -98,39 +104,30 @@ const library = (() => {
                     return
             }
         }
-        // --- will track boolean value of modalOpen currentModalView
-        const displayModalView = (prevModalView) => {
-            let showModalIndex = _currentModalView == 'addFormModal' ? 0 : _currentModalView == 'filtersFormModal' ? 1 : -1
-            let hideModalIndex = !_currentModalView == 'addFormModal' ? 1 : !_currentModalView == 'filtersFormModal' ? 0 : -1
-            if (prevModalView !== _currentModalView && prevModalView !== null) {
-                console.log('PREV MODAL OPEN: ' + prevModalView)
-                console.log('NEW MODAL OPEN: ' + _currentModalView)
-            } else if (prevModalView === _currentModalView) {
-                _toggleModalClasses(0, showModalIndex, 2)
-                _currentModalView = null
-            } else if (prevModalView === null) {
-                _modalOpen = true
-                _toggleModalClasses(showModalIndex, hideModalIndex, 1)
-            }
+        // --- toggles the modal style of the selected modal from 'none' to 'block'
+        //     will initially set each modal to a display of none
+        const _openModal = () => {
+            // --- set all modals display to none
+            modalsArr.forEach(modal => {
+                modal.style.display = 'none'
+            })
+            let theId      = _currentModalView == 'filtersFormModal' ? 'filterControls' : 'formModal'
+            let modalT     = document.querySelector(`#${theId}`)
+            modalT.style.display = 'block'
         }
-
-        // ?? HELPERS
-        // --- will take the current
-        const _toggleModalClasses = (showModalIndex, hideModalIndex, state) => {
-            switch (state) {
-                case 1:
-                    _modalForms[showModalIndex].forEach(modal => {
-                        modal.classList.toggle('hidden')
-                    })
-                    return
-                case 2:
-                    _modalForms[hideModalIndex].forEach(modal => {
-                        modal.classList.toggle('hidden')
-                    })
-                    return
-
+        // --- close the modal if the user clicks anywhere outside of modal
+        const _closeModalOnWindowClick = (() => {
+            window.onclick = function(e) {
+                // !!!--DO NO CHANGE--!!! ///
+                if (e.target.classList.contains('modal') && !e.target.classList.contains('add-form') || e.target.classList.contains('page-section')) {
+                    for (let index in modalsArr) {
+                        if (typeof modalsArr[index].style !== 'undefined') {
+                            modalsArr[index].style.display = 'none'; 
+                        }
+                    }
+                }
             }
-        }
+        })()
         
         const _init = (() => {
             _displayDataView()
@@ -139,11 +136,7 @@ const library = (() => {
         return {
             getCurrentModalView,
             getCurrentDataView,
-            setCurrentModalView: function(selection) {
-                let prevModalView = _currentModalView
-                _currentModalView = selection
-                displayModalView(prevModalView)
-            },
+            setCurrentModalView,
             setCurrentDataView
         }
     })()
