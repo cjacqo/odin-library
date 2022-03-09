@@ -51,10 +51,6 @@ const library = (() => {
             return returnArr
         }
 
-        const _init = (() => {
-            
-        })()
-
         return {
             getLibrary,
             getLibraryObjByIndex,
@@ -78,16 +74,14 @@ const library = (() => {
         function _infoToString() {
             return `${_name}, by ${_author}, ${_pages} pages. Is read: ${_read}`
         }
-        // function _createElements() {
-
-        // }
 
         return {
             getInfo
         }
     }
 
-    // HTML Elements
+    // Handles to state of the view
+    // --- what and if to show a modal, what data view is set
     const viewCntrl = (() => {
         // --- get HTML 
         //     >> modal containers
@@ -168,7 +162,7 @@ const library = (() => {
         }
     })()
 
-    // The Display
+    // Handles appending the library to the current data view
     const displayCntrl = (() => {
         //     >> buttons
         const buttons           = Array.from(document.querySelectorAll('button'))
@@ -176,8 +170,6 @@ const library = (() => {
         // !! FUNCTIONS
         const _renderData = (library) => {
             let dataParentContainer
-            let nodes
-            console.log(library)
 
             if (viewCntrl.getCurrentDataView() === 'table') {
                 dataParentContainer = viewCntrl._dataContainers[0]
@@ -193,9 +185,6 @@ const library = (() => {
                 })
             }
 
-            // dataParentContainer.remove()
-
-            
         }
         
         const _init = (() => {
@@ -218,20 +207,6 @@ const library = (() => {
             }
         }
     })()
-
-
-    
-    // const libraryObj = (() => {
-    //     let _uuid    = 0                 // *** fake implementation
-    // })()
-    // >> TESTS
-    // ----- TEST 1 ----- //
-    // function test1() {
-    //     console.log(libraryStorage.getLibrary())
-    //     libraryStorage.addObject('Hi')
-    //     console.log(libraryStorage.getLibrary())
-    //     console.log(libraryStorage.getLibraryObjByIndex(0))
-    // }
 
     // ----- TEST 2 ----- //
     function test2() {
