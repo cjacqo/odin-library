@@ -62,13 +62,15 @@ const library = (() => {
     const viewCntrl = (() => {
         // --- get HTML 
         //     >> modal containers
-        const _addFormModal         = document.querySelector('.add-form')
-        const _filterFormModal      = document.querySelector('.filter-form-container')
+        const [..._modalForms]      = [[document.querySelector('.add-form'), document.getElementById('overlay')],[document.querySelector('.filter-form-container')]]
         //     >> data containers
         const _tableContainer       = document.getElementById('tableDisplayParent')
         const _cardsContainer       = document.getElementById('cardsDisplayParent')
+        let _modalOpen              = false
+        let _currentModalView       = null
         let _currentDataView        = 'table'
         // @@ GETTERS
+        const getCurrentModalView   = () => _currentModalView
         const getCurrentDataView    = () => _currentDataView
         // @@ SETTERS
         const setCurrentDataView    = (selection) => {
@@ -77,7 +79,12 @@ const library = (() => {
         }
 
         // !! FUNCTIONS
+        // --- will assign class names based on the _currentDataView
+        //     to toggle hidden/visible styles of either the table
+        //     or the cards view
         const _displayDataView = () => {
+            // --- default modal to closed
+            _modalOpen = false
             switch(_currentDataView) {
                 case 'table':
                     _tableContainer.classList.remove('hidden')
@@ -91,13 +98,52 @@ const library = (() => {
                     return
             }
         }
+        // --- will track boolean value of modalOpen currentModalView
+        const displayModalView = (prevModalView) => {
+            let showModalIndex = _currentModalView == 'addFormModal' ? 0 : _currentModalView == 'filtersFormModal' ? 1 : -1
+            let hideModalIndex = !_currentModalView == 'addFormModal' ? 1 : !_currentModalView == 'filtersFormModal' ? 0 : -1
+            if (prevModalView !== _currentModalView && prevModalView !== null) {
+                console.log('PREV MODAL OPEN: ' + prevModalView)
+                console.log('NEW MODAL OPEN: ' + _currentModalView)
+            } else if (prevModalView === _currentModalView) {
+                _toggleModalClasses(0, showModalIndex, 2)
+                _currentModalView = null
+            } else if (prevModalView === null) {
+                _modalOpen = true
+                _toggleModalClasses(showModalIndex, hideModalIndex, 1)
+            }
+        }
 
+        // ?? HELPERS
+        // --- will take the current
+        const _toggleModalClasses = (showModalIndex, hideModalIndex, state) => {
+            switch (state) {
+                case 1:
+                    _modalForms[showModalIndex].forEach(modal => {
+                        modal.classList.toggle('hidden')
+                    })
+                    return
+                case 2:
+                    _modalForms[hideModalIndex].forEach(modal => {
+                        modal.classList.toggle('hidden')
+                    })
+                    return
+
+            }
+        }
+        
         const _init = (() => {
             _displayDataView()
         })()
 
         return {
+            getCurrentModalView,
             getCurrentDataView,
+            setCurrentModalView: function(selection) {
+                let prevModalView = _currentModalView
+                _currentModalView = selection
+                displayModalView(prevModalView)
+            },
             setCurrentDataView
         }
     })()
@@ -111,7 +157,12 @@ const library = (() => {
             // loop over the buttons array to assign related event listeners
             buttons.forEach(button => {
                 button.addEventListener('click', (e) => {
-                    viewCntrl.setCurrentDataView(e.currentTarget.value)
+                    let value = e.currentTarget.value
+                    if (value == 'table' || value == 'cards') {
+                        viewCntrl.setCurrentDataView(value)
+                    } else {
+                        viewCntrl.setCurrentModalView(value)
+                    }
                 })
             })
         })()
