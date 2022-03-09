@@ -249,8 +249,11 @@ const library = (() => {
         //   + log storage library
         const obj2 = LibraryObj('Lord of the Rings', 'J.R.R. Tolien', 500, true, 'Fantasy')
         console.log(obj2.getInfo())
-        libraryStorage.addObject(obj2)
+
+        setTimeout(() => {libraryStorage.addObject(obj2)}, 5000)
+        
         console.log(libraryStorage.getLibrary())
+        
     }
     test2()
     
