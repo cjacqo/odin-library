@@ -28,6 +28,7 @@ const library = (() => {
         }
 
         const _init = (() => {
+            
         })()
 
         return {
@@ -66,8 +67,9 @@ const library = (() => {
     const viewCntrl = (() => {
         // --- get HTML 
         //     >> modal containers
-        const modalsArr             = document.querySelectorAll('.modal')
+        const _modalsArr            = document.querySelectorAll('.modal')
         //     >> data containers
+        const _dataContainers       = document.querySelectorAll('.data-section')
         const _tableContainer       = document.getElementById('tableDisplayParent')
         const _cardsContainer       = document.getElementById('cardsDisplayParent')
         let _modalOpen              = false
@@ -95,24 +97,21 @@ const library = (() => {
         const _displayDataView = () => {
             // --- default modal to closed
             _modalOpen = false
-            switch(_currentDataView) {
-                case 'table':
-                    _tableContainer.classList.remove('hidden')
-                    _cardsContainer.classList.add('hidden')
-                    return
-                case 'cards':
-                    _cardsContainer.classList.remove('hidden')
-                    _tableContainer.classList.add('hidden')
-                    return
-                default:
-                    return
-            }
+            _dataContainers.forEach(container => {
+                const id = container.getAttribute('id')
+                const check = id.includes(_currentDataView)
+                if (check) {
+                    container.classList.remove('hidden')
+                } else {
+                    container.classList.add('hidden')
+                }
+            })
         }
         // --- toggles the modal style of the selected modal from 'none' to 'block'
         //     will initially set each modal to a display of none
         const _openModal = () => {
             // --- set all modals display to none
-            modalsArr.forEach(modal => {
+            _modalsArr.forEach(modal => {
                 modal.style.display = 'none'
             })
             let theId      = _currentModalView == 'filtersFormModal' ? 'filterControls' : 'formModal'
@@ -124,9 +123,9 @@ const library = (() => {
             window.onclick = function(e) {
                 // !!!--DO NO CHANGE--!!! ///
                 if (e.target.classList.contains('modal') && !e.target.classList.contains('add-form') || e.target.classList.contains('page-section')) {
-                    for (let index in modalsArr) {
-                        if (typeof modalsArr[index].style !== 'undefined') {
-                            modalsArr[index].style.display = 'none'; 
+                    for (let index in _modalsArr) {
+                        if (typeof _modalsArr[index].style !== 'undefined') {
+                            _modalsArr[index].style.display = 'none'; 
                         }
                     }
                 }
