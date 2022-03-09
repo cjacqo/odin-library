@@ -19,12 +19,16 @@ const library = (() => {
             // --- create HTML elements
 
             _library.push({_uuid,libObj})
+            displayCntrl.renderData(_library)
         }
         // ?? HELPER FUNCTIONS
         function _setUUID() {
             _uuid++
             return _uuid
         }
+
+        const _init = (() => {
+        })()
 
         return {
             getLibrary,
@@ -143,9 +147,14 @@ const library = (() => {
 
     // The Display
     const displayCntrl = (() => {
-        
         //     >> buttons
         const buttons           = Array.from(document.querySelectorAll('button'))
+
+        // !! FUNCTIONS
+        const _renderData = (library) => {
+            console.log(library)
+        }
+        
         const _init = (() => {
             // loop over the buttons array to assign related event listeners
             buttons.forEach(button => {
@@ -159,6 +168,12 @@ const library = (() => {
                 })
             })
         })()
+
+        return {
+            renderData: function(library) {
+                _renderData(library)
+            }
+        }
     })()
 
 
