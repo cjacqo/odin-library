@@ -7,8 +7,8 @@ const library = (() => {
         let _library = []
         let _uuid    = 0                 // *** fake implementation
         // @@ GETTERS
-        const getLibrary    = () => _library
-        const getLibraryObj = (num) => _library[num]
+        const getLibrary           = () => _library
+        const getLibraryObjByIndex = (num) => _library[num]
         // @@ SETTERS
         // const setLibrary
         // !! MODIFIER FUNCTIONS
@@ -24,12 +24,13 @@ const library = (() => {
 
         return {
             getLibrary,
-            getLibraryObj,
+            getLibraryObjByIndex,
             addObject
         }
     })()
 
     console.log(libraryStorage.getLibrary())
-    console.log(libraryStorage.addObject('Hi'))
+    libraryStorage.addObject('Hi')
     console.log(libraryStorage.getLibrary())
+    console.log(libraryStorage.getLibraryObjByIndex(0))
 })()
