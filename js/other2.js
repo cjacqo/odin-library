@@ -48,6 +48,9 @@ const library = (() => {
                 }
                 returnArr.push(container)
             }
+
+            // --- add necessary class to the card data container
+            returnArr[1].classList.add('card-container', 'flex')
             return returnArr
         }
 
