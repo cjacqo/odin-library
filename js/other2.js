@@ -2,7 +2,8 @@
 const library = (() => {
 
     // The Library
-    // --- contains the array of library objects (book)
+    // --- contains the array of library objects (book),
+    //     and has functions to control how data can be displayed
     const libraryStorage = (() => {
         let _library = []
         let _uuid    = 0
@@ -17,14 +18,36 @@ const library = (() => {
             // --- create a fake uuid
             _setUUID()
             // --- create HTML elements
-
-            _library.push({_uuid,libObj})
+            const elements = _createHTML(libObj)
+            _library.push({_uuid,libObj,elements})
             displayCntrl.renderData(_library)
         }
         // ?? HELPER FUNCTIONS
+        // --- fake unique ID generator used for removing items
         function _setUUID() {
             _uuid++
             return _uuid
+        }
+        // --- create HTML elements
+        function _createHTML(libObj) {
+            const [message, data] = libObj.getInfo()
+            const dataArr   = Object.entries(data)
+            let rowElement  = ['tr','td']
+            let cardElement = ['div', 'div']
+            let elementsArr = [rowElement, cardElement]
+            let returnArr   = []
+
+            for (let i = 0; i < elementsArr.length; i++) {
+                let elArr = elementsArr[i]
+                let container = document.createElement(elArr[0])
+                for (let j = 0; j < 5; j++) {
+                    let element = document.createElement(elArr[1])
+                    element.innerText = dataArr[i][1]
+                    container.appendChild(element)
+                }
+                returnArr.push(container)
+            }
+            return returnArr
         }
 
         const _init = (() => {
@@ -70,8 +93,6 @@ const library = (() => {
         const _modalsArr            = document.querySelectorAll('.modal')
         //     >> data containers
         const _dataContainers       = document.querySelectorAll('.data-section')
-        const _tableContainer       = document.getElementById('tableDisplayParent')
-        const _cardsContainer       = document.getElementById('cardsDisplayParent')
         let _modalOpen              = false
         let _currentModalView       = null
         let _prevModalView          = null
