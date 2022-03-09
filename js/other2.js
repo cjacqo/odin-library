@@ -18,7 +18,7 @@ const library = (() => {
             // --- create a fake uuid
             _setUUID()
             // --- create HTML elements
-            const elements = _createHTML(libObj)
+            const elements = _createHTML(libObj,_uuid)
             _library.push({_uuid,libObj,elements})
             displayCntrl.renderData(_library)
         }
@@ -29,7 +29,7 @@ const library = (() => {
             return _uuid
         }
         // --- create HTML elements
-        function _createHTML(libObj) {
+        function _createHTML(libObj, uuid) {
             const [message, data] = libObj.getInfo()
             const dataArr   = Object.entries(data)
             let rowElement  = ['tr','td']
@@ -40,9 +40,10 @@ const library = (() => {
             for (let i = 0; i < elementsArr.length; i++) {
                 let elArr = elementsArr[i]
                 let container = document.createElement(elArr[0])
+                container.setAttribute('data-uuid', uuid)
                 for (let j = 0; j < 5; j++) {
                     let element = document.createElement(elArr[1])
-                    element.innerText = dataArr[i][1]
+                    element.innerText = dataArr[j][1]
                     container.appendChild(element)
                 }
                 returnArr.push(container)
@@ -100,6 +101,7 @@ const library = (() => {
         // @@ GETTERS
         const getCurrentModalView   = () => _currentModalView
         const getCurrentDataView    = () => _currentDataView
+        const getDataContainers     = () => _dataContainers
         // @@ SETTERS
         const setCurrentModalView   = (selection) => {
             _prevModalView   = _currentDataView
@@ -160,6 +162,7 @@ const library = (() => {
         return {
             getCurrentModalView,
             getCurrentDataView,
+            _dataContainers,
             setCurrentModalView,
             setCurrentDataView
         }
@@ -172,7 +175,27 @@ const library = (() => {
 
         // !! FUNCTIONS
         const _renderData = (library) => {
+            let dataParentContainer
+            let nodes
             console.log(library)
+
+            if (viewCntrl.getCurrentDataView() === 'table') {
+                dataParentContainer = viewCntrl._dataContainers[0]
+                library.forEach(item => {
+                    const { elements } = item
+                    dataParentContainer.appendChild(elements[0])
+                })
+            } else if (viewCntrl.getCurrentDataView() === 'cards') {
+                dataParentContainer = viewCntrl._dataContainers[1]
+                library.forEach(item => {
+                    const { elements } = item
+                    dataParentContainer.appendChild(elements[0])
+                })
+            }
+
+            // dataParentContainer.remove()
+
+            
         }
         
         const _init = (() => {
