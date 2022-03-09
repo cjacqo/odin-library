@@ -60,32 +60,58 @@ const library = (() => {
 
     // HTML Elements
     const viewCntrl = (() => {
-        const userSelection = (selection) => {
-            console.log(selection)
+        // --- get HTML 
+        //     >> modal containers
+        const _addFormModal         = document.querySelector('.add-form')
+        const _filterFormModal      = document.querySelector('.filter-form-container')
+        //     >> data containers
+        const _tableContainer       = document.getElementById('tableDisplayParent')
+        const _cardsContainer       = document.getElementById('cardsDisplayParent')
+        let _currentDataView        = 'table'
+        // @@ GETTERS
+        const getCurrentDataView    = () => _currentDataView
+        // @@ SETTERS
+        const setCurrentDataView    = (selection) => {
+            _currentDataView = selection
+            _displayDataView()
         }
 
+        // !! FUNCTIONS
+        const _displayDataView = () => {
+            switch(_currentDataView) {
+                case 'table':
+                    _tableContainer.classList.remove('hidden')
+                    _cardsContainer.classList.add('hidden')
+                    return
+                case 'cards':
+                    _cardsContainer.classList.remove('hidden')
+                    _tableContainer.classList.add('hidden')
+                    return
+                default:
+                    return
+            }
+        }
+
+        const _init = (() => {
+            _displayDataView()
+        })()
+
         return {
-            userSelection
+            getCurrentDataView,
+            setCurrentDataView
         }
     })()
 
     // The Display
     const displayCntrl = (() => {
-        // --- get HTML 
-        //     >> modal containers
-        const addFormModal      = document.querySelector('.add-form')
-        const filterFormModal   = document.querySelector('.filter-form-container')
-        //     >> data containers
-        const tableContainer    = document.getElementById('tableDisplayParent')
-        const cardsContainer    = document.getElementById('cardsDisplayParent')
+        
         //     >> buttons
         const buttons           = Array.from(document.querySelectorAll('button'))
-        console.log(buttons)
         const _init = (() => {
             // loop over the buttons array to assign related event listeners
             buttons.forEach(button => {
                 button.addEventListener('click', (e) => {
-                    viewCntrl.userSelection(e.currentTarget.value)
+                    viewCntrl.setCurrentDataView(e.currentTarget.value)
                 })
             })
         })()
